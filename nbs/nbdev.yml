@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "data-science-notes"
+  site-url: "https://HenryDashwood.github.io/data-science-notes"
+  description: "Notes and examples of statistics, data science, and machine learning"
+  repo-branch: master
+  repo-url: "https://github.com/HenryDashwood/data-science-notes"
