@@ -10,7 +10,9 @@
   margin-bottom: 0;
 }
 
-.cell-output > pre, .cell-output > .sourceCode > pre, .cell-output-stdout > pre {
+.cell-output > pre,
+.cell-output > .sourceCode > pre,
+.cell-output-stdout > pre {
   margin-left: 0.8rem;
   margin-top: 0;
   background: none;
@@ -34,4 +36,24 @@ div.description {
   font-style: italic;
   font-size: 135%;
   opacity: 70%;
+}
+
+nav.navbar {
+  background-color: #faac1a;
+  color: black;
+}
+
+nav.navbar.navbar-dark .navbar-brand {
+  color: black;
+}
+
+body {
+  background-color: #fae9ca;
+  /* font-family: Times, serif; */
+  color: black;
+}
+
+#quarto-sidebar {
+  background-color: #fae9ca;
+  color: black;
 }
