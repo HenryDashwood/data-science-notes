@@ -3,3 +3,6 @@ website:
     contents:
       - index.ipynb
       - 00_statistics.ipynb
+      - section: Statistical Rethinking
+        contents:
+          - Statistical Rethinking/chapter1.ipynb
