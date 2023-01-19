@@ -5,4 +5,4 @@ d = { 'settings': { 'branch': 'master',
                 'doc_host': 'https://HenryDashwood.github.io',
                 'git_url': 'https://github.com/HenryDashwood/data-science-notes',
                 'lib_path': 'data_science_notes'},
-  'syms': {'data_science_notes.core': {'data_science_notes.core.foo': ('core.html#foo', 'data_science_notes/core.py')}}}
+  'syms': {}}
