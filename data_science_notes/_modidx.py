@@ -2,7 +2,7 @@
 
 d = { 'settings': { 'branch': 'master',
                 'doc_baseurl': '/data-science-notes',
-                'doc_host': 'https://HenryDashwood.github.io',
+                'doc_host': 'https://data-science-notes.henrydashwood.com',
                 'git_url': 'https://github.com/HenryDashwood/data-science-notes',
                 'lib_path': 'data_science_notes'},
   'syms': {}}
