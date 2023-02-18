@@ -3,6 +3,9 @@ website:
     contents:
       - index.ipynb
       - 00_statistics.ipynb
+      - 01_metrics.ipynb
+      - 10_feature_importance.ipynb
+      - 12_gains_chart.ipynb
       - section: Statistical Rethinking
         contents:
           - Statistical Rethinking/chapter1.ipynb
