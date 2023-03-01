@@ -1,0 +1,10 @@
+[tool.black]
+line-length = 119
+target-version = ['py311']
+
+[tool.ruff]
+select = ["E", "F", "I", "W"]
+line-length = 119
+
+[tool.ruff.isort]
+profile = "black"
