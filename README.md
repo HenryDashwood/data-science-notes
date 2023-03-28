@@ -7,12 +7,6 @@ Part of [henrydashwood.com](https://henrydashwood.com)
 
 ## Questions
 
-- Is roc_auc affected by class imbalance?
-
-- How to interpret an roc curve?
-
-- What is gini for?
-
-- How to interpret a precision-recall curve?
+- Somers D
 
 - What is shap?
