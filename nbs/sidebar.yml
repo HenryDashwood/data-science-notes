@@ -4,8 +4,15 @@ website:
       - index.ipynb
       - 00_statistics.ipynb
       - 01_metrics.ipynb
+      - 05_random_forest.ipynb
       - 10_feature_importance.ipynb
+      - 11_psi.ipynb
       - 12_decile_analysis.ipynb
+      - 13_rollrate_analysis.ipynb
+      - imbalanced_data.ipynb
+      - section: Data Science From Scratch
+        contents:
+          - Data Science From Scratch/08_gradient_descent.ipynb
       - section: Statistical Rethinking
         contents:
           - Statistical Rethinking/chapter1.ipynb
