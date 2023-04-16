@@ -4,15 +4,29 @@ website:
       - index.ipynb
       - 00_statistics.ipynb
       - 01_metrics.ipynb
-      - 05_random_forest.ipynb
       - 10_feature_importance.ipynb
       - 11_psi.ipynb
       - 12_decile_analysis.ipynb
       - 13_rollrate_analysis.ipynb
       - imbalanced_data.ipynb
+      - section: Calculus
+        contents:
+          - Calculus/07_chain_rule.ipynb
+          - Calculus/08_product_rule.ipynb
+          - Calculus/09_quotient_rule.ipynb
+          - Calculus/10_partial_derivatives.ipynb
+          - Calculus/11_directional_derivatives.ipynb
       - section: Data Science From Scratch
         contents:
           - Data Science From Scratch/08_gradient_descent.ipynb
+          - Data Science From Scratch/14_simple_linear_regression.ipynb
+      - section: Gradient Boosting
+        contents:
+          - Gradient Boosting/rossman_xgboost.ipynb
+      - section: Random Forests
+        contents:
+          - Random Forests/05_random_forest.ipynb
+          - Random Forests/jovian_random_forest.ipynb
       - section: Statistical Rethinking
         contents:
           - Statistical Rethinking/chapter1.ipynb
