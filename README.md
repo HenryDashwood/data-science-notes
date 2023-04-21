@@ -5,8 +5,14 @@ Data Science Notes
 
 Part of [henrydashwood.com](https://henrydashwood.com)
 
-## Questions
+## Useful Tools
 
+- [Geogebra](https://www.geogebra.org/)
+- [Wolfram Alha](https://www.wolframalpha.com/)
+- [Chat GPT](https://chat.openai.com/)
+
+## TODOs
+
+- Finish linear regression section
 - Somers D
-
 - What is shap?
