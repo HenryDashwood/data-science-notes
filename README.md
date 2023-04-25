@@ -11,8 +11,14 @@ Part of [henrydashwood.com](https://henrydashwood.com)
 - [Wolfram Alha](https://www.wolframalpha.com/)
 - [Chat GPT](https://chat.openai.com/)
 
-## TODOs
+## TODO
 
-- Finish linear regression section
+- Multiple Regression, use other columns in the autos dataset
 - Somers D
 - What is shap?
+- Unbalanced data
+
+## TOREAD
+
+- [Interpretable Machine
+  Learning](https://christophm.github.io/interpretable-ml-book/)
