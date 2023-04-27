@@ -22,3 +22,9 @@ Part of [henrydashwood.com](https://henrydashwood.com)
 
 - [Interpretable Machine
   Learning](https://christophm.github.io/interpretable-ml-book/)
+- [Imbalanced Classification with
+  Python](https://machinelearningmastery.com/imbalanced-classification-with-python/)
+- [Statisical
+  Rethinking](https://www.amazon.co.uk/Statistical-Rethinking-Bayesian-Examples-Chapman-ebook/dp/B085WBY8S7/)
+- [Natural Language Processing with
+  Transformers](https://www.oreilly.com/library/view/natural-language-processing/9781098136789/)
