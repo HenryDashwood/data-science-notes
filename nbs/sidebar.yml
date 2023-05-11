@@ -5,11 +5,14 @@ website:
       - 00_statistics.ipynb
       - 01_metrics.ipynb
       - 02_linear_regression.ipynb
-      - 10_feature_importance.ipynb
-      - 11_psi.ipynb
-      - 12_decile_analysis.ipynb
       - 13_rollrate_analysis.ipynb
       - imbalanced_data.ipynb
+      - section: Interpretability
+        contents:
+          - 05_Interpretability/00_feature_importance.ipynb
+          - 05_Interpretability/01_psi.ipynb
+          - 05_Interpretability/02_decile_analysis.ipynb
+          - 05_Interpretability/04_ALE_plots.ipynb
       - section: Calculus
         contents:
           - Calculus/07_chain_rule.ipynb
@@ -23,6 +26,9 @@ website:
       - section: Gradient Boosting
         contents:
           - Gradient Boosting/rossman_xgboost.ipynb
+      - section: Plotting
+        contents:
+          - Plotting/matplotlib.ipynb
       - section: Random Forests
         contents:
           - Random Forests/05_random_forest.ipynb
