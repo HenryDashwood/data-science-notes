@@ -7,11 +7,15 @@ website:
       - 02_linear_regression.ipynb
       - 13_rollrate_analysis.ipynb
       - imbalanced_data.ipynb
+      - section: Logistic_Regression
+        contents:
+          - 04_Logistic_Regression/logistic_regression.ipynb
       - section: Interpretability
         contents:
           - 05_Interpretability/00_feature_importance.ipynb
           - 05_Interpretability/01_psi.ipynb
           - 05_Interpretability/02_decile_analysis.ipynb
+          - 05_Interpretability/03_partial_dependence.ipynb
           - 05_Interpretability/04_ALE_plots.ipynb
       - section: Calculus
         contents:
