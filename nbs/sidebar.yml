@@ -17,6 +17,10 @@ website:
           - 05_Interpretability/02_decile_analysis.ipynb
           - 05_Interpretability/03_partial_dependence.ipynb
           - 05_Interpretability/04_ALE_plots.ipynb
+          - 05_Interpretability/05_profit_curves.ipynb
+      - section: Computer_Vision
+        contents:
+          - 06_Computer_Vision/01_OpenCV.ipynb
       - section: Calculus
         contents:
           - Calculus/07_chain_rule.ipynb
