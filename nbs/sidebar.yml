@@ -2,11 +2,15 @@ website:
   sidebar:
     contents:
       - index.ipynb
-      - 00_statistics.ipynb
-      - 01_metrics.ipynb
-      - 02_linear_regression.ipynb
-      - 13_rollrate_analysis.ipynb
       - imbalanced_data.ipynb
+      - section: Statistics
+        contents:
+          - 00_Statistics/00_statistics.ipynb
+          - 00_Statistics/02_linear_regression.ipynb
+      - section: General_Concepts
+        contents:
+          - 01_General_Concepts/01_metrics.ipynb
+          - 01_General_Concepts/02_loss_functions.ipynb
       - section: Logistic_Regression
         contents:
           - 04_Logistic_Regression/logistic_regression.ipynb
@@ -18,9 +22,16 @@ website:
           - 05_Interpretability/03_partial_dependence.ipynb
           - 05_Interpretability/04_ALE_plots.ipynb
           - 05_Interpretability/05_profit_curves.ipynb
+          - 05_Interpretability/06_decision_opt_continuous_outcomes.ipynb
+          - 05_Interpretability/07_dynamic_decision_opt.ipynb
       - section: Computer_Vision
         contents:
           - 06_Computer_Vision/01_OpenCV.ipynb
+          - 06_Computer_Vision/02_image_transforms.ipynb
+      - section: Geospatial
+        contents:
+          - 07_Geospatial/01_geopandas.ipynb
+          - 07_Geospatial/GDAL.ipynb
       - section: Calculus
         contents:
           - Calculus/07_chain_rule.ipynb
