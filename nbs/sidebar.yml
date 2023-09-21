@@ -24,6 +24,7 @@ website:
           - 05_Interpretability/05_profit_curves.ipynb
           - 05_Interpretability/06_decision_opt_continuous_outcomes.ipynb
           - 05_Interpretability/07_dynamic_decision_opt.ipynb
+          - 05_Interpretability/08_drift.ipynb
       - section: Computer_Vision
         contents:
           - 06_Computer_Vision/01_OpenCV.ipynb
