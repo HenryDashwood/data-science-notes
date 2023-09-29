@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Data Science Notes - Statistics</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../styles.css">
+<meta property="og:title" content="Data Science Notes - Statistics">
+<meta property="og:description" content="">
+<meta property="og:image" content="https://data-science-notes.henrydashwood.com/data-science-notes/00_Statistics/00_statistics_files/figure-html/cell-2-output-1.png">
+<meta property="og:site-name" content="Data Science Notes">
+<meta property="og:image:height" content="470">
+<meta property="og:image:width" content="630">
+<meta name="twitter:title" content="Data Science Notes - Statistics">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="https://data-science-notes.henrydashwood.com/data-science-notes/00_Statistics/00_statistics_files/figure-html/cell-2-output-1.png">
+<meta name="twitter:image-height" content="470">
+<meta name="twitter:image-width" content="630">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Data Science Notes</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools ms-auto">
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../00_Statistics/statistics.html">Statistics</a></li><li class="breadcrumb-item"><a href="../00_Statistics/statistics.html">Statistics</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Science Notes</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../imbalanced_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Imbalanced Data</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Statistics</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../00_Statistics/statistics.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Statistics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../00_Statistics/linear_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Linear Regression</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">General_Concepts</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../01_General_Concepts/metrics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Metrics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../01_General_Concepts/loss_functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Loss Functions</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Logistic_Regression</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../04_Logistic_Regression/logistic_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Logistic Regression</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Interpretability</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_Interpretability/feature_importance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feature Importance</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_Interpretability/psi.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Population Stability Index (PSI)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_Interpretability/decile_analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Decile Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_Interpretability/partial_dependence.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Partial Dependence Plots</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_Interpretability/ale_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ALE PLot</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Computer_Vision</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../06_Computer_Vision/opencv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">OpenCV</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../06_Computer_Vision/02_image_transforms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Image Transforms</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Geospatial</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../07_Geospatial/geopandas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">GeoPandas</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../07_Geospatial/interactive_folium.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Interactive Maps with Folium</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../07_Geospatial/geocoding_and_joining.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Manipulating Geospatial Data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../07_Geospatial/shapely.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Shapely</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../07_Geospatial/gdal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">GDAL</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">
+ <span class="menu-text">Decision_Optimisation</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../08_Decision_Optimisation/profit_curves.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Profit Curves</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../08_Decision_Optimisation/decision_opt_continuous_outcomes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Decision Optimisation for Continuous Outcomes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../08_Decision_Optimisation/dynamic_decision_opt.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Simulation for Dynamic Decision Optimisation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../08_Decision_Optimisation/drift.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Concept Drift and How Things Go Wrong</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true">
+ <span class="menu-text">Calculus</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Calculus/chain_rule.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Chain Rule</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Calculus/product_rule.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Product Rule</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Calculus/quotient_rule.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quotient Rule</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Calculus/partial_derivatives.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Partial Derivatives</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Calculus/directional_derivatives.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Directional Derivatives</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true">
+ <span class="menu-text">Data Science From Scratch</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Data Science From Scratch/gradient_descent.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Gradient Descent</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" aria-expanded="true">
+ <span class="menu-text">Gradient Boosting</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Gradient Boosting/rossman_xgboost.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">XGBoost</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" aria-expanded="true">
+ <span class="menu-text">Plotting</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Plotting/matplotlib.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Matplotlib</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" aria-expanded="true">
+ <span class="menu-text">Random Forests</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Random Forests/random_forest.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Random Forest</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" aria-expanded="true">
+ <span class="menu-text">Statistical Rethinking</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Statistical Rethinking/chapter1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Baysian Data Analysis</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#descriptive-statistics" id="toc-descriptive-statistics" class="nav-link active" data-scroll-target="#descriptive-statistics">Descriptive Statistics</a>
+  <ul class="collapse">
+  <li><a href="#mean" id="toc-mean" class="nav-link" data-scroll-target="#mean">Mean</a></li>
+  <li><a href="#median" id="toc-median" class="nav-link" data-scroll-target="#median">Median</a></li>
+  <li><a href="#mode" id="toc-mode" class="nav-link" data-scroll-target="#mode">Mode</a></li>
+  <li><a href="#dispersion" id="toc-dispersion" class="nav-link" data-scroll-target="#dispersion">Dispersion</a></li>
+  <li><a href="#variance" id="toc-variance" class="nav-link" data-scroll-target="#variance">Variance</a></li>
+  <li><a href="#standard-deviation" id="toc-standard-deviation" class="nav-link" data-scroll-target="#standard-deviation">Standard Deviation</a></li>
+  <li><a href="#interquartile-range" id="toc-interquartile-range" class="nav-link" data-scroll-target="#interquartile-range">Interquartile Range</a></li>
+  <li><a href="#covariance" id="toc-covariance" class="nav-link" data-scroll-target="#covariance">Covariance</a></li>
+  <li><a href="#correlation" id="toc-correlation" class="nav-link" data-scroll-target="#correlation">Correlation</a></li>
+  </ul></li>
+  <li><a href="#probability" id="toc-probability" class="nav-link" data-scroll-target="#probability">Probability</a>
+  <ul class="collapse">
+  <li><a href="#bayes-theorem" id="toc-bayes-theorem" class="nav-link" data-scroll-target="#bayes-theorem">Bayes’ Theorem</a></li>
+  <li><a href="#random-variables" id="toc-random-variables" class="nav-link" data-scroll-target="#random-variables">Random Variables</a></li>
+  <li><a href="#continuous-distributions" id="toc-continuous-distributions" class="nav-link" data-scroll-target="#continuous-distributions">Continuous Distributions</a></li>
+  </ul></li>
+  <li><a href="#inferential-statistics" id="toc-inferential-statistics" class="nav-link" data-scroll-target="#inferential-statistics">Inferential Statistics</a>
+  <ul class="collapse">
+  <li><a href="#hypothesis-testing" id="toc-hypothesis-testing" class="nav-link" data-scroll-target="#hypothesis-testing">Hypothesis Testing</a></li>
+  <li><a href="#t-testsdistribution" id="toc-t-testsdistribution" class="nav-link" data-scroll-target="#t-testsdistribution">T Tests/Distribution</a></li>
+  <li><a href="#anova" id="toc-anova" class="nav-link" data-scroll-target="#anova">ANOVA</a></li>
+  <li><a href="#variance-ratio-f-test" id="toc-variance-ratio-f-test" class="nav-link" data-scroll-target="#variance-ratio-f-test">Variance ratio (F) test</a></li>
+  </ul></li>
+  <li><a href="#regression" id="toc-regression" class="nav-link" data-scroll-target="#regression">Regression</a></li>
+  <li><a href="#noise-reduction" id="toc-noise-reduction" class="nav-link" data-scroll-target="#noise-reduction">Noise reduction</a></li>
+  <li><a href="#baysian-data-analysis" id="toc-baysian-data-analysis" class="nav-link" data-scroll-target="#baysian-data-analysis">Baysian Data Analysis</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/HenryDashwood/data-science-notes/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Statistics</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<section id="descriptive-statistics" class="level2">
+<h2 class="anchored" data-anchor-id="descriptive-statistics">Descriptive Statistics</h2>
+<section id="mean" class="level3">
+<h3 class="anchored" data-anchor-id="mean">Mean</h3>
+<p><span class="math display">\[
+\bar x = \frac 1 n \sum_ {i=1}^n  x_i
+\]</span></p>
+</section>
+<section id="median" class="level3">
+<h3 class="anchored" data-anchor-id="median">Median</h3>
+<p>The median is the middle value in an ordered set of data. If there are an even number of values it is the average of the middle 2 values in the set.</p>
+</section>
+<section id="mode" class="level3">
+<h3 class="anchored" data-anchor-id="mode">Mode</h3>
+<p>The mode is the most common value (or values) in a set of data.</p>
+</section>
+<section id="dispersion" class="level3">
+<h3 class="anchored" data-anchor-id="dispersion">Dispersion</h3>
+<p>Dispersion refers to measures of how spread out our data is. The simplest measure of dispersion is the range which is the difference between the largest and smallest elements in a set of data.</p>
+</section>
+<section id="variance" class="level3">
+<h3 class="anchored" data-anchor-id="variance">Variance</h3>
+<p>A more sophisticated measure of dispersion is the variance. You can think of this as the average squared deviation from the mean. However we modify the sum by dividing by <span class="math inline">\(n-1\)</span> because when dealing with a sample from a larger population, <span class="math inline">\(\bar{x}\)</span> is only an estimate of the actual mean. On average this means <span class="math inline">\(x_i - \bar{x}\)</span> is an underestimate of the true deviation which is why we divide by a smaller denominator.</p>
+<p>[QUESTION: Why only subtract 1?]</p>
+<p>[QUESTION: What if you actually do have the entire population?]</p>
+<p><span class="math display">\[
+S^2 = \frac {\sum {(x_i - \bar{x})}^2} {n - 1}
+\]</span></p>
+<p><span class="math inline">\(S^2\)</span> = sample variance<br>
+<span class="math inline">\(x_i\)</span> = value of the one observation<br>
+<span class="math inline">\(\bar{x}\)</span> = mean value of all observations<br>
+<span class="math inline">\(n\)</span> = number of observations</p>
+</section>
+<section id="standard-deviation" class="level3">
+<h3 class="anchored" data-anchor-id="standard-deviation">Standard Deviation</h3>
+<p>The standard deviation is the square root of the variance which means it is in the same units as the range of the dataset.</p>
+<p><span class="math display">\[
+S = \sqrt {\frac {\sum {(x_i - \bar{x})}^2} {n - 1}}
+\]</span></p>
+<p><span class="math inline">\(S^2\)</span> = sample variance<br>
+<span class="math inline">\(x_i\)</span> = value of the one observation<br>
+<span class="math inline">\(\bar{x}\)</span> = mean value of all observations<br>
+<span class="math inline">\(n\)</span> = number of observations</p>
+</section>
+<section id="interquartile-range" class="level3">
+<h3 class="anchored" data-anchor-id="interquartile-range">Interquartile Range</h3>
+<p>The interquartile range is the difference between the 75th and 25th percentile value. This is a simple measure but useful as it is not affected by outliers like the range and standard deviation are.</p>
+</section>
+<section id="covariance" class="level3">
+<h3 class="anchored" data-anchor-id="covariance">Covariance</h3>
+<p>Whereas variance measures how a single variable deviates from its mean, covariance measures how two variables vary in tandem from their means.</p>
+<p><span class="math display">\[
+cov_{x,y} = \frac {\sum {(x_i - \bar{x})(y_i - \bar{y})}} {N - 1}
+\]</span></p>
+<p><span class="math inline">\(cov_{x,y}\)</span> = covariance between variable x and y<br>
+<span class="math inline">\(x_i\)</span> = data value of x<br>
+<span class="math inline">\(y_i\)</span> = data value of y<br>
+<span class="math inline">\(\bar{x}\)</span> = mean of x<br>
+<span class="math inline">\(\bar{y}\)</span> = mean of y<br>
+<span class="math inline">\(N\)</span> = number of data values</p>
+<p>A “large” positive covariance means that <span class="math inline">\(x\)</span> tends to be large when <span class="math inline">\(y\)</span> is large and small when y is small. A “large” negative covariance means the opposite — that <span class="math inline">\(x\)</span> tends to be small when <span class="math inline">\(y\)</span> is large and vice versa. A covariance close to zero means that no such relationship exists.</p>
+<p>Covariance can be hard to interpret because:</p>
+<ul>
+<li>Its units are the product of the inputs’ units which can be hard to make sense of.</li>
+<li>If each every value of <span class="math inline">\(x\)</span> was doubled (with <span class="math inline">\(y\)</span> staying the same) the covariance would be twice as large. But the variables would be just as interrelated. So it’s hard to say what counts as a “large” covariance.</li>
+</ul>
+</section>
+<section id="correlation" class="level3">
+<h3 class="anchored" data-anchor-id="correlation">Correlation</h3>
+<p>Pearson’s correlation coefficient is the covariance of the two variables divided by the product of their standard deviations:</p>
+<p><span class="math display">\[
+\rho(X,Y) = \frac {cov(X,Y)}{\sigma(X)\sigma(Y)}
+\]</span></p>
+<p><span class="math inline">\(cov\)</span> = the covariance<br>
+<span class="math inline">\(\sigma(X)\)</span> = the standard deviation of X<br>
+<span class="math inline">\(\sigma(Y)\)</span> = the standard deviation of Y<br>
+</p>
+<p>Correlation shows us relationships in which knowing how <span class="math inline">\(x_i\)</span> compares to the mean of <span class="math inline">\(x\)</span> gives us information about how <span class="math inline">\(y_i\)</span> compares to the mean of <span class="math inline">\(y\)</span>. Other types of relationship may not show up. It also doesn’t tell us how large the relationship is. It is also the case that if <span class="math inline">\(E\)</span> and <span class="math inline">\(F\)</span> are independent if the probability of them both happening is equal to the product of the probability of each one happening.</p>
+<section id="simpsons-paradox" class="level4">
+<h4 class="anchored" data-anchor-id="simpsons-paradox">Simpson’s Paradox</h4>
+</section>
+</section>
+</section>
+<section id="probability" class="level2">
+<h2 class="anchored" data-anchor-id="probability">Probability</h2>
+<p>Notationally, <span class="math inline">\(P(E)\)</span> means the probability of the event <span class="math inline">\(E\)</span>.</p>
+<p>Events <span class="math inline">\(E\)</span> and <span class="math inline">\(F\)</span> are <code>dependent</code> if inforamation about whether <span class="math inline">\(E\)</span> happens gives us information about whether <span class="math inline">\(F\)</span> happens or vice versa. Otherwise the two events are independent of each other.</p>
+<p><span class="math display">\[ P(E,F) = P(E)P(F) \]</span></p>
+<p>If the two events are not necessarily independent (and the probability of <span class="math inline">\(F\)</span> is not 0) we define probability of <span class="math inline">\(E\)</span> given <span class="math inline">\(F\)</span> as:</p>
+<p><span class="math display">\[ P(E|F) = \frac {P(E,F)}{P(F)} \]</span></p>
+<p>This is often written as:</p>
+<p><span class="math display">\[ P(E,F) = P(E|F)P(F) \]</span></p>
+<p>When <span class="math inline">\(E\)</span> and <span class="math inline">\(F\)</span> are independent this means:</p>
+<p><span class="math display">\[ P(E|F) = P(E) \]</span></p>
+<p>Let’s ask <em>what is the probability “both children are girls” conditional on the event “the older child is a girl”?</em></p>
+<p>We use the definition of conditional probability and the fact that the event <span class="math inline">\(Both\)</span> and <span class="math inline">\(Girl\)</span> (“both children are girls and the older child is a girl”) is the same as the event <span class="math inline">\(Both\)</span>.</p>
+<p><span class="math display">\[
+\begin{align}
+P(Both|Girl) &amp;= \frac {P(Both, Girl)}{P(Girl)} \notag \\
+&amp;= \frac {P(Both)}{P(Girl)} \notag \\
+&amp;= \frac {1}{2} \notag
+\end{align}
+\]</span></p>
+<p>We can also ask about the probability of the event “both children are girls” conditional on the event “at least one of the children is a girl” (<span class="math inline">\(At\ Least\ One\)</span>). Surprisingly, the answer is different from before. If all you know is that at least one of the children is a girl, then it is twice as likely that the family has one boy and one girl than that it has both girls.</p>
+<p><span class="math display">\[
+\begin{align}
+P(Both | At\ Least\ One) &amp;= \frac {P(Both, At\ Least\ One)} {P(At\ Least\ One)} \notag \\
+&amp;= \frac {P(Both)} {P(At\ Least\ One)} \notag \\
+&amp;= \frac {1}{3} \notag
+\end{align}
+\]</span></p>
+<section id="bayes-theorem" class="level3">
+<h3 class="anchored" data-anchor-id="bayes-theorem">Bayes’ Theorem</h3>
+<p>Bayes’s theorem is a way of “reversing” conditional probabilities. If we need to know the probability of some event <span class="math inline">\(E\)</span> conditional on some other event <span class="math inline">\(F\)</span> occurring but we only have information about the probability of <span class="math inline">\(F\)</span> conditional on <span class="math inline">\(E\)</span> occurring, using the definition of conditional probability twice tells us that:</p>
+<p><span class="math display">\[
+\begin{align}
+P(E | F) &amp;= \frac {P(E, F)} {P(F)} \notag \\
+&amp;= \frac {P(F | E)P(E)} {P(F)} \notag \\
+\end{align}
+\]</span></p>
+<p>The event <span class="math inline">\(F\)</span> can be split into the two mutually exclusive events “<span class="math inline">\(F\)</span> and <span class="math inline">\(E\)</span>” and “<span class="math inline">\(F\)</span> and not <span class="math inline">\(E\)</span>”. We write <span class="math inline">\(\neg\)</span> for “not”.</p>
+<p><span class="math display">\[
+\begin{align}
+P(F) &amp;= P(F, E) + P(F, \neg E) \notag \\
+P(E | F) &amp;= \frac {P(F | E)P(E)} {P(F, E)P(E) + P(F, \neg E)P(\neg E)} \notag \\
+\end{align}
+\]</span></p>
+<p>If a disease has a 1 in 10000 chance of occurring (<span class="math inline">\(P(Disease) = 0.0001\)</span>) and a test has a 99% chance of giving a positive result when someone has the disease (<span class="math inline">\(P(Positive|Disease) = 0.99\)</span>) we would apply Bayes Theorum like so:</p>
+<p><span class="math display">\[
+\begin{align}
+P(Disease | Positive) &amp;= \frac {P(Positive | Disease)P(Disease)} {P(Positive | Disease)P(Disease) + P(Positive | \neg Disease)P(\neg Disease)} \notag \\
+&amp;= \frac {0.99 \times 0.0001}{0.99 \times 0.0001 + 0.01 \times 0.9999} \notag \\
+&amp;\approx 0.0098 \notag \\
+&amp;= 0.98\% \notag
+\end{align}
+\]</span></p>
+<p>Note that this assumes people take the test roughly at random. If only people with certain symptoms take the test, we would have to condition on the event “positive result and symptoms” and the number would likely be a lot higher.</p>
+<p>We can also view this problem using natural frequencies. In a population of 1 million people you’d expect 100 of them to have the disease, and 99 of those 100 to test positive. On the other hand, you’d expect 999,900 of them not to have the disease, and 9,999 of those to test positive. That means you’d expect only 99 out of 10098 (99 + 9999) positive testers to actually have the disease which is roughly 0.98%.</p>
+</section>
+<section id="random-variables" class="level3">
+<h3 class="anchored" data-anchor-id="random-variables">Random Variables</h3>
+<p>A random variable is a variable whose possible values have an associated probability distribution. The expected value of a random variable is the average of its values weighted by their probabilities.</p>
+<p>A very simple random variable equals 1 if a coin flip turns up heads and 0 if the flip turns up tails. The variable equals 0 with probability 0.5 and 1 with probability 0.5. It has an expected value of <span class="math inline">\(\frac{1}{2} = (0 * \frac{1}{2} + 1 * \frac{1}{2})\)</span></p>
+<p>A more complicated random variable might measure the number of heads you observe when flipping a coin 10 times or a value picked from <code>range(10)</code> where each number is equally likely. The associated distribution gives the probabilities that the variable realizes each of its possible values. In this case the variable has a distribution that assigns probability 0.1 to each of the numbers from 0 to 9. Flipping a coin 10 times has an expected value of 5.5. The range(10) variable has an expected value of 4.5.</p>
+<p><span class="math display">\[
+E(X) = \sum {X_iP(X_i)}
+\]</span></p>
+<p><span class="math inline">\(X_i\)</span> = The values that X can take<br>
+<span class="math inline">\(P(X_i)\)</span> = The probability that X takes the value <span class="math inline">\(X_i\)</span></p>
+<p>Random variables can be conditioned on events just as other events can. Going back to the two-child example, if <span class="math inline">\(X\)</span> is the random variable representing the number of girls, <span class="math inline">\(X\)</span> equals 0 with probability <span class="math inline">\(1 \over 2\)</span> <span class="math inline">\(\frac{1}{4}\)</span>, 1 with probability <span class="math inline">\(\frac{1}{2}\)</span>, and 2 with probability <span class="math inline">\(\frac{1}{4}\)</span>. We can define a new random variable <span class="math inline">\(Y\)</span> that gives the number of girls conditional on at least one of the children being a girl. Then <span class="math inline">\(Y\)</span> equals 1 with probability <span class="math inline">\(\frac{2}{3}\)</span> and 2 with probability <span class="math inline">\(\frac{1}{3}\)</span>. And a variable <span class="math inline">\(Z\)</span> that’s the number of girls conditional on the older child being a girl equals 1 with probability <span class="math inline">\(\frac{1}{2}\)</span> and 2 with probability <span class="math inline">\(\frac{1}{2}\)</span>.</p>
+</section>
+<section id="continuous-distributions" class="level3">
+<h3 class="anchored" data-anchor-id="continuous-distributions">Continuous Distributions</h3>
+<p>A coin flip corresponds to a discrete distribution — one that associates positive probability with discrete outcomes. Often we’ll want to model distributions across a continuum of outcomes. Because there are infinitely many numbers between 0 and 1, this means that the weight it assigns to individual points is be zero (for our purposes these outcomes will always be real numbers although that’s not always the case in real life). We represent a continuous distribution with a <code>probability density function</code> (PDF) such that the probability of seeing a value in a certain interval equals the integral of the density function over the interval. The <code>cumulative distribution function</code> (CDF) gives the probability that a random variable is less than or equal to a certain value.</p>
+<section id="uniform-distribution" class="level4">
+<h4 class="anchored" data-anchor-id="uniform-distribution">Uniform Distribution</h4>
+<p>The uniform distribution puts equal weight on all the numbers between 0 and 1.</p>
+<section id="probability-density-function" class="level5">
+<h5 class="anchored" data-anchor-id="probability-density-function">Probability density function</h5>
+<p><span class="math display">\[
+f(x) =
+\begin{cases}
+    \frac{1}{b-a} &amp; a \leq x \leq b \\
+    0 &amp; \text{otherwise}
+\end{cases}
+\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>plot_lower_bound, plot_upper_bound <span class="op">=</span> <span class="op">-</span><span class="dv">1</span>, <span class="dv">6</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>xs <span class="op">=</span> np.arange(plot_lower_bound, plot_upper_bound, <span class="fl">0.1</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> uniform_pdf(x: <span class="bu">float</span>, lower: <span class="bu">float</span>, upper: <span class="bu">float</span>) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> lower <span class="op">&lt;=</span> x <span class="op">&lt;=</span> upper:</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">1</span> <span class="op">/</span> (upper <span class="op">-</span> lower)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">0</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>ys <span class="op">=</span> [uniform_pdf(x, <span class="dv">0</span>, <span class="dv">5</span>) <span class="cf">for</span> x <span class="kw">in</span> xs]</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">1</span>, tight_layout<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>ax.plot(xs, ys)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>ax.margins(x<span class="op">=</span><span class="dv">0</span>, y<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># ax.set_yticks(np.arange(0, max(ys)*1.1, 0.02))</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>ax.set_xticks(np.arange(plot_lower_bound, plot_upper_bound <span class="op">+</span> <span class="dv">1</span>))</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="dv">0</span>, <span class="bu">max</span>(ys) <span class="op">*</span> <span class="fl">1.25</span>)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Uniform PDF"</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="00_statistics_files/figure-html/cell-2-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="cumulative-distribution-function" class="level5">
+<h5 class="anchored" data-anchor-id="cumulative-distribution-function">Cumulative distribution function</h5>
+<p><span class="math display">\[
+F(x) =
+\begin{cases}
+    0 &amp; x &lt; a \\
+    \frac{x-a}{b-a} &amp; a \leq x \leq b \\
+    1 &amp; x &gt; b
+\end{cases}
+\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> uniform_cdf(x: <span class="bu">float</span>, lower: <span class="bu">float</span>, upper: <span class="bu">float</span>) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Returns the probability that a uniform random variable is &lt;= x"""</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> x <span class="op">&lt;</span> lower:</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">0</span>  <span class="co"># uniform random is never less than 0</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> x <span class="op">&lt;</span> upper:</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> (x <span class="op">-</span> lower) <span class="op">/</span> (upper <span class="op">-</span> lower)  <span class="co"># e.g. P(X &lt;= 0.4) = 0.4</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">1</span>  <span class="co"># uniform random is always less than 1</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>ys <span class="op">=</span> [uniform_cdf(x, <span class="dv">0</span>, <span class="dv">5</span>) <span class="cf">for</span> x <span class="kw">in</span> xs]</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">1</span>, tight_layout<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>ax.plot(xs, ys)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>ax.margins(x<span class="op">=</span><span class="dv">0</span>, y<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="dv">0</span>, <span class="bu">max</span>(ys) <span class="op">*</span> <span class="fl">1.25</span>)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>ax.set_xticks(np.arange(plot_lower_bound, plot_upper_bound <span class="op">+</span> <span class="dv">1</span>))</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Uniform CDF"</span>)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="00_statistics_files/figure-html/cell-3-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="normal-distribution" class="level4">
+<h4 class="anchored" data-anchor-id="normal-distribution">Normal Distribution</h4>
+<p>The normal distribution is a continuous distribution that is symmetric about its mean. It is defined by two parameters: the mean <span class="math inline">\(\mu\)</span> and the standard deviation <span class="math inline">\(\sigma\)</span>. The normal distribution is the most important continuous distribution in statistics. It is often used to model random variables that are the sum of many independent random variables. It is also the basis for the t-distribution, which is used to model the distribution of sample means.</p>
+<section id="probability-density-function-1" class="level5">
+<h5 class="anchored" data-anchor-id="probability-density-function-1">Probability density function</h5>
+<p><span class="math display">\[
+f(x|\mu,\sigma) = \frac{1}{\sigma \sqrt{2 \pi}} e^{-\frac{(x-\mu)^2}{2 \sigma^2}}
+\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> normal_pdf(x: <span class="bu">float</span>, mu: <span class="bu">float</span> <span class="op">=</span> <span class="dv">0</span>, sigma: <span class="bu">float</span> <span class="op">=</span> <span class="dv">1</span>) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> math.exp(<span class="op">-</span>((x <span class="op">-</span> mu) <span class="op">**</span> <span class="dv">2</span>) <span class="op">/</span> <span class="dv">2</span> <span class="op">/</span> sigma<span class="op">**</span><span class="dv">2</span>) <span class="op">/</span> (math.sqrt(<span class="dv">2</span> <span class="op">*</span> math.pi) <span class="op">*</span> sigma)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>xs <span class="op">=</span> [x <span class="op">/</span> <span class="fl">10.0</span> <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="op">-</span><span class="dv">50</span>, <span class="dv">50</span>)]</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">1</span>, tight_layout<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>ax.plot(xs, [normal_pdf(x, sigma<span class="op">=</span><span class="dv">1</span>) <span class="cf">for</span> x <span class="kw">in</span> xs], <span class="st">"-"</span>, label<span class="op">=</span><span class="st">"mu=0,sigma=1"</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>ax.plot(xs, [normal_pdf(x, sigma<span class="op">=</span><span class="dv">2</span>) <span class="cf">for</span> x <span class="kw">in</span> xs], <span class="st">"--"</span>, label<span class="op">=</span><span class="st">"mu=0,sigma=2"</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>ax.plot(xs, [normal_pdf(x, sigma<span class="op">=</span><span class="fl">0.5</span>) <span class="cf">for</span> x <span class="kw">in</span> xs], <span class="st">":"</span>, label<span class="op">=</span><span class="st">"mu=0,sigma=0.5"</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>ax.plot(xs, [normal_pdf(x, mu<span class="op">=-</span><span class="dv">1</span>) <span class="cf">for</span> x <span class="kw">in</span> xs], <span class="st">"-."</span>, label<span class="op">=</span><span class="st">"mu=-1,sigma=1"</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Various Normal pdfs"</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="00_statistics_files/figure-html/cell-4-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>When <span class="math inline">\(\mu\)</span>=0 and <span class="math inline">\(\sigma\)</span>=1 it is called the standard normal distribution. If <span class="math inline">\(Z\)</span> is a standard normal random variable, then it turns out that <span class="math inline">\(X = \sigma Z + \mu\)</span> is also normal but with mean <span class="math inline">\(\mu\)</span> and standard deviation <span class="math inline">\(\sigma\)</span>. Conversely, if <span class="math inline">\(X\)</span> is a normal random variable with mean <span class="math inline">\(\mu\)</span> and standard deviation <span class="math inline">\(\sigma\)</span> then <span class="math inline">\(Z = \frac{X-\mu}{\sigma}\)</span> is a standard normal variable.</p>
+</section>
+<section id="cumulative-distribution-function-1" class="level5">
+<h5 class="anchored" data-anchor-id="cumulative-distribution-function-1">Cumulative distribution function</h5>
+<p>The CDF for the normal distribution cannot be written in an “elementary” manner, but we can write it using Python’s <code>math.erf</code> error function:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> normal_cdf(x: <span class="bu">float</span>, mu: <span class="bu">float</span> <span class="op">=</span> <span class="dv">0</span>, sigma: <span class="bu">float</span> <span class="op">=</span> <span class="dv">1</span>) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (<span class="dv">1</span> <span class="op">+</span> math.erf((x <span class="op">-</span> mu) <span class="op">/</span> math.sqrt(<span class="dv">2</span>) <span class="op">/</span> sigma)) <span class="op">/</span> <span class="dv">2</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>xs <span class="op">=</span> [x <span class="op">/</span> <span class="fl">10.0</span> <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="op">-</span><span class="dv">50</span>, <span class="dv">50</span>)]</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">1</span>, tight_layout<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>ax.plot(xs, [normal_cdf(x, sigma<span class="op">=</span><span class="dv">1</span>) <span class="cf">for</span> x <span class="kw">in</span> xs], <span class="st">"-"</span>, label<span class="op">=</span><span class="st">"mu=0,sigma=1"</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>ax.plot(xs, [normal_cdf(x, sigma<span class="op">=</span><span class="dv">2</span>) <span class="cf">for</span> x <span class="kw">in</span> xs], <span class="st">"--"</span>, label<span class="op">=</span><span class="st">"mu=0,sigma=2"</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>ax.plot(xs, [normal_cdf(x, sigma<span class="op">=</span><span class="fl">0.5</span>) <span class="cf">for</span> x <span class="kw">in</span> xs], <span class="st">":"</span>, label<span class="op">=</span><span class="st">"mu=0,sigma=0.5"</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>ax.plot(xs, [normal_cdf(x, mu<span class="op">=-</span><span class="dv">1</span>) <span class="cf">for</span> x <span class="kw">in</span> xs], <span class="st">"-."</span>, label<span class="op">=</span><span class="st">"mu=-1,sigma=1"</span>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>ax.legend(loc<span class="op">=</span><span class="dv">4</span>)  <span class="co"># bottom right</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Various Normal cdfs"</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="00_statistics_files/figure-html/cell-5-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>Sometimes we’ll need to invert the normal CDF to find the value corresponding to a specified probability. There’s no simple way to compute its inverse, but <code>normal_cdf</code> is continuous and strictly increasing, so we can use a binary search. The function repeatedly bisects intervals until it narrows in on a <span class="math inline">\(Z\)</span> that’s close enough to the desired probability.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> inverse_normal_cdf(p: <span class="bu">float</span>, mu: <span class="bu">float</span> <span class="op">=</span> <span class="dv">0</span>, sigma: <span class="bu">float</span> <span class="op">=</span> <span class="dv">1</span>, tolerance: <span class="bu">float</span> <span class="op">=</span> <span class="fl">0.00001</span>) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Find approximate inverse using binary search"""</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># if not standard, compute standard and rescale</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> mu <span class="op">!=</span> <span class="dv">0</span> <span class="kw">or</span> sigma <span class="op">!=</span> <span class="dv">1</span>:</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> mu <span class="op">+</span> sigma <span class="op">*</span> inverse_normal_cdf(p, tolerance<span class="op">=</span>tolerance)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    low_z <span class="op">=</span> <span class="op">-</span><span class="fl">10.0</span>  <span class="co"># normal_cdf(-10) is (very close to) 0</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    hi_z <span class="op">=</span> <span class="fl">10.0</span>  <span class="co"># normal_cdf(10)  is (very close to) 1</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> hi_z <span class="op">-</span> low_z <span class="op">&gt;</span> tolerance:</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        mid_z <span class="op">=</span> (low_z <span class="op">+</span> hi_z) <span class="op">/</span> <span class="dv">2</span>  <span class="co"># Consider the midpoint</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        mid_p <span class="op">=</span> normal_cdf(mid_z)  <span class="co"># and the CDF's value there</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> mid_p <span class="op">&lt;</span> p:</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>            low_z <span class="op">=</span> mid_z  <span class="co"># Midpoint too low, search above it</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>            hi_z <span class="op">=</span> mid_z  <span class="co"># Midpoint too high, search below it</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> mid_z</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="the-central-limit-theorem" class="level4">
+<h4 class="anchored" data-anchor-id="the-central-limit-theorem">The Central Limit Theorem</h4>
+<p>One reason the normal distribution is so useful is the central limit theorem, which says (in essence) that a random variable defined as the average of a large number of independent and identically distributed random variables is itself approximately normally distributed.</p>
+<p>In particular, if <span class="math inline">\(x_1, ..., x_n\)</span> are random variables with mean <span class="math inline">\(\mu\)</span> and standard deviation <span class="math inline">\(\sigma\)</span>, and if <span class="math inline">\(n\)</span> is large, then <span class="math inline">\(\frac{1}{n} (x_1 + ... + x_n)\)</span> is approximately normally distributed with mean <span class="math inline">\(\mu\)</span> and standard deviation <span class="math inline">\(\frac{\sigma}{\sqrt{n}}\)</span>. Equivalently (but often more usefully), <span class="math inline">\(\frac{(x_1 + ... + x_n) - \mu n}{\sigma \sqrt{n}}\)</span> is approximately normally distributed with mean 0 and standard deviation 1.</p>
+<p>An easy way to illustrate this is by looking at binomial random variables, which have two parameters <span class="math inline">\(n\)</span> and <span class="math inline">\(p\)</span>. A <span class="math inline">\(Binomial(n,p)\)</span> random variable is simply the sum of <span class="math inline">\(n\)</span> independent <span class="math inline">\(Bernoulli(p)\)</span> random variables, each of which equals 1 with probability <span class="math inline">\(p\)</span> and 0 with probability <span class="math inline">\(1 – p\)</span>. The mean of a <span class="math inline">\(Bernoulli(p)\)</span> variable is <span class="math inline">\(p\)</span>, and its standard deviation is <span class="math inline">\(\sqrt{p(1-p)}\)</span>. The central limit theorem says that as <span class="math inline">\(n\)</span> gets large, a <span class="math inline">\(Binomial(n,p)\)</span> variable is approximately a normal random variable with mean <span class="math inline">\(\mu = np\)</span> and standard deviation <span class="math inline">\(\sigma = \sqrt{np(1-p)}\)</span>. If we plot both, you can easily see the resemblance:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> bernoulli_trial(p: <span class="bu">float</span>) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Returns 1 with probability p and 0 with probability 1-p"""</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">1</span> <span class="cf">if</span> random.random() <span class="op">&lt;</span> p <span class="cf">else</span> <span class="dv">0</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> binomial(n: <span class="bu">int</span>, p: <span class="bu">float</span>) <span class="op">-&gt;</span> <span class="bu">int</span>:</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Returns the sum of n bernoulli(p) trials"""</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">sum</span>(bernoulli_trial(p) <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(n))</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> binomial_histogram(p: <span class="bu">float</span>, n: <span class="bu">int</span>, num_points: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Picks points from a Binomial(n, p) and plots their histogram"""</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">1</span>, tight_layout<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> [binomial(n, p) <span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(num_points)]</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># use a bar chart to show the actual binomial samples</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    histogram <span class="op">=</span> Counter(data)</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    ax.bar([x <span class="op">-</span> <span class="fl">0.4</span> <span class="cf">for</span> x <span class="kw">in</span> histogram.keys()], [v <span class="op">/</span> num_points <span class="cf">for</span> v <span class="kw">in</span> histogram.values()], <span class="fl">0.8</span>, color<span class="op">=</span><span class="st">"0.75"</span>)</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    mu <span class="op">=</span> p <span class="op">*</span> n</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    sigma <span class="op">=</span> math.sqrt(n <span class="op">*</span> p <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> p))</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># use a line chart to show the normal approximation</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    xs <span class="op">=</span> <span class="bu">range</span>(<span class="bu">min</span>(data), <span class="bu">max</span>(data) <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    ys <span class="op">=</span> [normal_cdf(i <span class="op">+</span> <span class="fl">0.5</span>, mu, sigma) <span class="op">-</span> normal_cdf(i <span class="op">-</span> <span class="fl">0.5</span>, mu, sigma) <span class="cf">for</span> i <span class="kw">in</span> xs]</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>    ax.plot(xs, ys)</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="st">"Binomial Distribution vs. Normal Approximation"</span>)</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>binomial_histogram(<span class="fl">0.75</span>, <span class="dv">100</span>, <span class="dv">10000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="00_statistics_files/figure-html/cell-8-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>The moral of this approximation is that if you want to know the probability that e.g.&nbsp;a fair coin turns up more than 60 heads in 100 flips, you can estimate it as the probability that a <span class="math inline">\(Normal(50,5)\)</span> is greater than 60, which is easier than computing the <span class="math inline">\(Binomial(100,0.5)\)</span> CDF. (Although in most applications you’d probably be using statistical software that would gladly compute whatever probabilities you want.)</p>
+</section>
+</section>
+</section>
+<section id="inferential-statistics" class="level2">
+<h2 class="anchored" data-anchor-id="inferential-statistics">Inferential Statistics</h2>
+<section id="hypothesis-testing" class="level3">
+<h3 class="anchored" data-anchor-id="hypothesis-testing">Hypothesis Testing</h3>
+<p>Under various assumptions, statistics can be thought of as observations of random variables from known distributions, which allows us to make statements about how likely those assumptions are to hold. In the classical setup, we have a null hypothesis, <span class="math inline">\(H_0\)</span>, that represents some default position, and some alternative hypothesis, <span class="math inline">\(H_1\)</span>, that we’d like to compare it with. We use statistics to decide whether we can reject <span class="math inline">\(H_1\)</span> as false or not. This will probably make more sense with an example.</p>
+<p>Imagine we have a coin and we want to test whether it’s fair. We’ll make the assumption that the coin has some probability <span class="math inline">\(p\)</span> of landing heads, and so our null hypothesis is that the coin is fair - that <span class="math inline">\(p = 0.5\)</span>. We’ll test this against the alternative hypothesis <span class="math inline">\(p \ne 0.5\)</span>. In particular, our test will involve flipping the coin <span class="math inline">\(n\)</span> times and counting the number of heads <span class="math inline">\(X\)</span>. Each coin flip is a Bernoulli trial, which means that <span class="math inline">\(X\)</span> is a <span class="math inline">\(Binomial(n,p)\)</span> random variable, which we can approximate using the normal distribution. Whenever a random variable follows a normal distribution, we can use <code>normal_cdf</code> to figure out the probability that its realized value lies within or outside a particular interval.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> normal_approximation_to_binomial(n: <span class="bu">int</span>, p: <span class="bu">float</span>) <span class="op">-&gt;</span> Tuple[<span class="bu">float</span>, <span class="bu">float</span>]:</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Returns mu and sigma corresponding to a Binomial(n, p)"""</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    mu <span class="op">=</span> p <span class="op">*</span> n</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    sigma <span class="op">=</span> math.sqrt(p <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> p) <span class="op">*</span> n)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> mu, sigma</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># The normal cdf _is_ the probability the variable is below a threshold</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>normal_probability_below <span class="op">=</span> normal_cdf</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co"># It's above the threshold if it's not below the threshold</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> normal_probability_above(lo: <span class="bu">float</span>, mu: <span class="bu">float</span> <span class="op">=</span> <span class="dv">0</span>, sigma: <span class="bu">float</span> <span class="op">=</span> <span class="dv">1</span>) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""The probability that an N(mu, sigma) is greater than lo."""</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">1</span> <span class="op">-</span> normal_cdf(lo, mu, sigma)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="co"># It's between if it's less than hi, but not less than lo</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> normal_probability_between(lo: <span class="bu">float</span>, hi: <span class="bu">float</span>, mu: <span class="bu">float</span> <span class="op">=</span> <span class="dv">0</span>, sigma: <span class="bu">float</span> <span class="op">=</span> <span class="dv">1</span>) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""The probability that an N(mu, sigma) is between lo and hi."""</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> normal_cdf(hi, mu, sigma) <span class="op">-</span> normal_cdf(lo, mu, sigma)</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="co"># It's outside if it's not between</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> normal_probability_outside(lo: <span class="bu">float</span>, hi: <span class="bu">float</span>, mu: <span class="bu">float</span> <span class="op">=</span> <span class="dv">0</span>, sigma: <span class="bu">float</span> <span class="op">=</span> <span class="dv">1</span>) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""The probability that an N(mu, sigma) is not between lo and hi."""</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">1</span> <span class="op">-</span> normal_probability_between(lo, hi, mu, sigma)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can also do the reverse — find either the nontail region or the (symmetric) interval around the mean that accounts for a certain level of likelihood. For example, if we want to find an interval centered at the mean and containing 60% probability, then we find the cutoffs where the upper and lower tails each contain 20% of the probability (leaving 60%):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> normal_upper_bound(probability: <span class="bu">float</span>, mu: <span class="bu">float</span> <span class="op">=</span> <span class="dv">0</span>, sigma: <span class="bu">float</span> <span class="op">=</span> <span class="dv">1</span>) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Returns the z for which P(Z &lt;= z) = probability"""</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> inverse_normal_cdf(probability, mu, sigma)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> normal_lower_bound(probability: <span class="bu">float</span>, mu: <span class="bu">float</span> <span class="op">=</span> <span class="dv">0</span>, sigma: <span class="bu">float</span> <span class="op">=</span> <span class="dv">1</span>) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Returns the z for which P(Z &gt;= z) = probability"""</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> inverse_normal_cdf(<span class="dv">1</span> <span class="op">-</span> probability, mu, sigma)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> normal_two_sided_bounds(probability: <span class="bu">float</span>, mu: <span class="bu">float</span> <span class="op">=</span> <span class="dv">0</span>, sigma: <span class="bu">float</span> <span class="op">=</span> <span class="dv">1</span>) <span class="op">-&gt;</span> Tuple[<span class="bu">float</span>, <span class="bu">float</span>]:</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Returns the symmetric (about the mean) bounds that contain the specified probability"""</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    tail_probability <span class="op">=</span> (<span class="dv">1</span> <span class="op">-</span> probability) <span class="op">/</span> <span class="dv">2</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># upper bound should have tail_probability above it</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    upper_bound <span class="op">=</span> normal_lower_bound(tail_probability, mu, sigma)</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># lower bound should have tail_probability below it</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>    lower_bound <span class="op">=</span> normal_upper_bound(tail_probability, mu, sigma)</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> lower_bound, upper_bound</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s say that we choose to flip the coin <span class="math inline">\(n = 1000\)</span> times. If our hypothesis of fairness is true, <span class="math inline">\(X\)</span> should be distributed approximately normally with mean 500 and standard deviation 15.8:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>mu_0, sigma_0 <span class="op">=</span> normal_approximation_to_binomial(<span class="dv">1000</span>, <span class="fl">0.5</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>mu_0, sigma_0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>(500.0, 15.811388300841896)</code></pre>
+</div>
+</div>
+<p>We need to make a decision about significance — how willing we are to make a type 1 error (“false positive”) in which we reject <span class="math inline">\(H_0\)</span> even though it’s true. For reasons lost to the annals of history, this willingness is often set at 5% or 1%. Let’s choose 5%. Consider the test that rejects <span class="math inline">\(H_0\)</span> if <span class="math inline">\(X\)</span> falls outside the bounds given by:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>lower_bound, upper_bound <span class="op">=</span> normal_two_sided_bounds(<span class="fl">0.95</span>, mu_0, sigma_0)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>lower_bound, upper_bound</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>(469.01026640487555, 530.9897335951244)</code></pre>
+</div>
+</div>
+<p>Assuming <span class="math inline">\(p\)</span> really equals 0.5 (i.e.&nbsp;<span class="math inline">\(H_0\)</span> is true) there is just a 5% chance we observe an <span class="math inline">\(X\)</span> that lies outside this interval which is the exact significance we wanted. Said differently, if <span class="math inline">\(H_0\)</span> is true, then, approximately 19 times out of 20, this test will give the correct result. We are also often interested in the power of a test, which is the probability of not making a type 2 error (“false negative”) in which we fail to reject <span class="math inline">\(H_0\)</span> even though it’s false. In order to measure this we have to specify what exactly <span class="math inline">\(H_0\)</span> being false means. (Knowing merely that <span class="math inline">\(p \ne 0.5\)</span> doesn’t give us a ton of information about the distribution of X). In particular, let’s check what happens if <span class="math inline">\(p\)</span> is really 0.55, so that the coin is slightly biased toward heads. In that case, we can calculate the power of the test with:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 95% bounds based on assumption p is 0.5</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>lo, hi <span class="op">=</span> normal_two_sided_bounds(<span class="fl">0.95</span>, mu_0, sigma_0)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(lo, hi)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># actual mu and sigma based on p = 0.55</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>mu_1, sigma_1 <span class="op">=</span> normal_approximation_to_binomial(<span class="dv">1000</span>, <span class="fl">0.55</span>)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mu_1, sigma_1)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co"># a type 2 error means we fail to reject the null hypothesis which will happen when X is still in our original interval</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>type_2_probability <span class="op">=</span> normal_probability_between(lo, hi, mu_1, sigma_1)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>power <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> type_2_probability</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(power)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>469.01026640487555 530.9897335951244
+550.0 15.732132722552274
+0.8865480012953671</code></pre>
+</div>
+</div>
+<p>Imagine instead that our null hypothesis was that the coin is not biased toward heads or that <span class="math inline">\(P \le 0.5\)</span>. In that case we want a <code>one-sided</code> test that rejects the null hypothesis when <span class="math inline">\(X\)</span> is much larger than 500 but not when <span class="math inline">\(X\)</span> is smaller than 500. So, a 5% significance test involves using normal_probability_below to find the cutoff below which 95% of the probability lies:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>hi <span class="op">=</span> normal_upper_bound(<span class="fl">0.95</span>, mu_0, sigma_0)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hi)  <span class="co"># is 526 (&lt; 531, since we need more probability in the upper tail)</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>type_2_probability <span class="op">=</span> normal_probability_below(hi, mu_1, sigma_1)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>power <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> type_2_probability  <span class="co"># 0.936</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(power)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>526.0073585242053
+0.9363794803307173</code></pre>
+</div>
+</div>
+<p>This is a more powerful test, since it no longer rejects <span class="math inline">\(H_0\)</span> when <span class="math inline">\(X\)</span> is below 469 (which is very unlikely to happen if <span class="math inline">\(H_1\)</span> is true) and instead rejects <span class="math inline">\(H_0\)</span> when <span class="math inline">\(X\)</span> is between 526 and 531 (which is somewhat likely to happen if <span class="math inline">\(H_1\)</span> is true).</p>
+<section id="p-values" class="level4">
+<h4 class="anchored" data-anchor-id="p-values">P-Values</h4>
+<p>An alternative way of thinking about the preceding test involves p-values. Instead of choosing bounds based on some probability cutoff, we compute the probability — assuming <span class="math inline">\(H_0\)</span> is true — that we would see a value at least as extreme as the one we actually observed. For our two-sided test of whether the coin is fair, we compute:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> two_sided_p_value(x: <span class="bu">float</span>, mu: <span class="bu">float</span> <span class="op">=</span> <span class="dv">0</span>, sigma: <span class="bu">float</span> <span class="op">=</span> <span class="dv">1</span>) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co">    How likely are we to see a value at least as extreme as x (in either</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co">    direction) if our values are from an N(mu, sigma)?</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> x <span class="op">&gt;=</span> mu:</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>        <span class="co"># x is greater than the mean, so the tail is everything greater than x</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">2</span> <span class="op">*</span> normal_probability_above(x, mu, sigma)</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>        <span class="co"># x is less than the mean, so the tail is everything less than x</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">2</span> <span class="op">*</span> normal_probability_below(x, mu, sigma)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>If we were to see 530 heads, we would compute:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>two_sided_p_value(<span class="fl">529.5</span>, mu_0, sigma_0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>0.06207721579598835</code></pre>
+</div>
+</div>
+<p>Since the p-value is greater than our 5% significance, we don’t reject the null. If we instead saw 532 heads, the p-value would be:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>two_sided_p_value(<span class="fl">531.5</span>, mu_0, sigma_0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>0.046345287837786575</code></pre>
+</div>
+</div>
+<p>and we would reject the null.</p>
+<p>Make sure your data is roughly normally distributed before using <code>normal_probability_above</code> to compute p-values. The annals of bad data science are filled with examples of people opining that the chance of some observed event occurring at random is one in a million, when what they really mean is “the chance, <em>assuming the data is distributed normally</em>” which is fairly meaningless if the data isn’t. There are various statistical tests for normality but even plotting the data is a good start.</p>
+<section id="continuity-corrections" class="level5">
+<h5 class="anchored" data-anchor-id="continuity-corrections">Continuity Corrections</h5>
+<p>We use a value of 529.5 rather than 530 because <code>normal_probability_between(529.5, 530.5, mu_0, sigma_0)</code> is a better estimate of the probability of seeing 530 heads than <code>normal_probability_between(530, 531, mu_0, sigma_0)</code>. Correspondingly, <code>normal_probability_above(529.5, mu_0, sigma_0)</code> is a better estimate of the probability of seeing at least 530 heads.</p>
+</section>
+</section>
+</section>
+<section id="t-testsdistribution" class="level3">
+<h3 class="anchored" data-anchor-id="t-testsdistribution">T Tests/Distribution</h3>
+</section>
+<section id="anova" class="level3">
+<h3 class="anchored" data-anchor-id="anova">ANOVA</h3>
+<p>When looking at data, you might want to know if two groups are different. ANOVA (analysis of variance) calculates the <strong>between group variance</strong> and the <strong>within group variance</strong></p>
+<p>The ratio of the SS (between SS divided by within SS) results is known as the F-statistic</p>
+</section>
+<section id="variance-ratio-f-test" class="level3">
+<h3 class="anchored" data-anchor-id="variance-ratio-f-test">Variance ratio (F) test</h3>
+</section>
+</section>
+<section id="regression" class="level2">
+<h2 class="anchored" data-anchor-id="regression">Regression</h2>
+</section>
+<section id="noise-reduction" class="level2">
+<h2 class="anchored" data-anchor-id="noise-reduction">Noise reduction</h2>
+</section>
+<section id="baysian-data-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="baysian-data-analysis">Baysian Data Analysis</h2>
+<p>Bayesian data analysis takes a question in the form of a model and uses logic to produce an answer in the form of probability distributions.</p>
+<p>In Baysian data analysis:</p>
+<ul>
+<li>For each possible explanation of the data, count all the ways the data can happen</li>
+<li>Explanations with more ways to produce the data are more plausible</li>
+</ul>
+<p>Imagine a bag that contains 4 marbles. Some are blue and some are white. We don’t know in what proportion. A table of all the possible combinations looks like this. These possible combinations are our <strong>conjectures</strong>.</p>
+<table class="table">
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">B</td>
+<td style="text-align: center;">B</td>
+<td style="text-align: center;">B</td>
+<td style="text-align: center;">B</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">B</td>
+<td style="text-align: center;">B</td>
+<td style="text-align: center;">B</td>
+<td style="text-align: center;">W</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">B</td>
+<td style="text-align: center;">B</td>
+<td style="text-align: center;">W</td>
+<td style="text-align: center;">W</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">B</td>
+<td style="text-align: center;">W</td>
+<td style="text-align: center;">W</td>
+<td style="text-align: center;">W</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">W</td>
+<td style="text-align: center;">W</td>
+<td style="text-align: center;">W</td>
+<td style="text-align: center;">W</td>
+</tr>
+</tbody>
+</table>
+<p>Now suppose that we draw 3 marbles from the bag with replacement. The results from that will be our <strong>data</strong>.</p>
+<p><span class="math display">\[
+BWB
+\]</span></p>
+<p>How could we think about what the 4th marble is likely to be?</p>
+<p>Notice that the number of ways to produce the data, for each conjecture, can be computed by first counting the number of paths in each “ring” of the garden and then by multiplying these counts together.</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Conjecture</th>
+<th style="text-align: center;">Number of ways to produce the <span class="math display">\[BWB\]</span></th>
+<th style="text-align: center;">Plausibility</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math display">\[WWWW\]</span></td>
+<td style="text-align: center;"><span class="math display">\[0 \times 4 \times 0 = 0\]</span></td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math display">\[BWWW\]</span></td>
+<td style="text-align: center;"><span class="math display">\[1 \times 3 \times 1 = 3\]</span></td>
+<td style="text-align: center;">0.15</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math display">\[BBWW\]</span></td>
+<td style="text-align: center;"><span class="math display">\[2 \times 2 \times 2 = 8\]</span></td>
+<td style="text-align: center;">0.4</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math display">\[BBBW\]</span></td>
+<td style="text-align: center;"><span class="math display">\[3 \times 1 \times 3  = 9\]</span></td>
+<td style="text-align: center;">0.45</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math display">\[BBBB\]</span></td>
+<td style="text-align: center;"><span class="math display">\[4 \times 0 \times 4  = 0\]</span></td>
+<td style="text-align: center;">0</td>
+</tr>
+</tbody>
+</table>
+<p>The rules for Baysian updating:</p>
+<ol type="1">
+<li>State a causal model for how observations arise, given each possible explanation</li>
+<li>Count ways data could arise for each explanation</li>
+<li>Relative plausibility is relative value from (2)</li>
+</ol>
+<p>Let’s suppose we draw another <span class="math display">\[B\]</span> from the bag. We can update our previous (<strong>prior</strong>) counts and update them in light of the new observation becuase the new observation is logically independent of the previous observations. First count the numbers of ways each conjecture could produce the new observation. Then multiply each of these new counts by the prior numbers of ways for each conjecture. In table form:</p>
+<table class="table">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 25%">
+<col style="width: 18%">
+<col style="width: 23%">
+<col style="width: 19%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Conjecture</th>
+<th style="text-align: center;">Ways to produce <span class="math display">\[B\]</span></th>
+<th style="text-align: center;">Previous counts</th>
+<th style="text-align: center;">New count</th>
+<th style="text-align: center;">New plausibility</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math display">\[WWWW\]</span></td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;"><span class="math display">\[0 \times 0 = 0\]</span></td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math display">\[BWWW\]</span></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;"><span class="math display">\[3 \times 1 = 3\]</span></td>
+<td style="text-align: center;"><span class="math display">\[0.07\]</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math display">\[BBWW\]</span></td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">8</td>
+<td style="text-align: center;"><span class="math display">\[8 \times 2 = 16\]</span></td>
+<td style="text-align: center;"><span class="math display">\[0.35\]</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math display">\[BBBW\]</span></td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">9</td>
+<td style="text-align: center;"><span class="math display">\[9 \times 3 = 27\]</span></td>
+<td style="text-align: center;"><span class="math display">\[0.57\]</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math display">\[BBBB\]</span></td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;"><span class="math display">\[0 \times 4 = 0\]</span></td>
+<td style="text-align: center;">0</td>
+</tr>
+</tbody>
+</table>
+<p>Obviously you want to normalise these values which is why we have a plausibilty colum. You can can converts the counts to probabilities with the following formula:</p>
+<p><span class="math display">\[
+plausibility\ of\ p\ after\ D_{new} = \frac {ways\ p\ can\ produce\ D_{new} \times prior\ plausibility\ p} {sum\ of\ products}
+\]</span></p>
+<p>Every updated set of plausibilities becomes the initial plausibilities for the next observation. Every conclusion is the starting point for future inference. This updating process works backwards as well as forwards. Given a final set of plausibilities and knowing the final observation <span class="math display">\[W\]</span> it is possible to mathematically divide out the observation to infer the previous plausibility curve. So the data could be presented to your model in any order, or all at once even. In most cases you will present the data all at once for convenience. This represents an abbreviation of an iterated learning process.</p>
+<p>Some points about Baysian Inference:</p>
+<ol type="1">
+<li>There is no such thing as a minimum sample size. The curve is likely to be flat and wide when you have little data but that’s fine. It might even be enough information to be useful in some sense.</li>
+<li>The shape of the curve embodies the sample size. As you get more data the curve gets narrower and taller.</li>
+<li>Point estimates don’t have a big role in Baysian data analyis because the the estimate is the curve/distribution. Always use the entire posterior distribution because to do otherwise is to throw away uncertainty and generate overconfident answers. Summary should always be the last step.</li>
+<li>Intervals don’t have a strong role in Baysian inference. How wide to make an interval or even where to centre it is an arbitrary descision.</li>
+</ol>
+<p>What proportion of the Earth is covered by water? We aren’t going to visit literally every point on Earth. So how can we work this out? We can take a sample. Suppose we visit ten points of earth at random and record whether it is covered by land or water. Suppose these are our results :</p>
+<p><span class="math display">\[
+W, W, W, L, W, W, W, W, W, L
+\]</span></p>
+<p>The counts of “water” <span class="math display">\[W\]</span> and “land’ <span class="math display">\[L\]</span> are distributed binomially, with probability p of “water” on each toss.</p>
+<p><span class="math display">\[
+Pr(W,L|p) = \frac {(W + L)!} {W!L!} p^W(1 − p)^L
+\]</span></p>
+<p>A short way of writing our model</p>
+<p>W ~ Binomial(N, p)</p>
+<p>Where N = W + L</p>
+<p>p ~ Uniform(0,1)</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

@@ -1,0 +1,1774 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Data Science Notes - Simulation for Dynamic Decision Optimisation</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+<meta property="og:title" content="Data Science Notes - Simulation for Dynamic Decision Optimisation">
+<meta property="og:description" content="">
+<meta property="og:image" content="https://data-science-notes.henrydashwood.com/data-science-notes/08_Decision_Optimisation/03_dynamic_decision_opt_files/figure-html/cell-3-output-1.svg">
+<meta property="og:site-name" content="Data Science Notes">
+<meta name="twitter:title" content="Data Science Notes - Simulation for Dynamic Decision Optimisation">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="https://data-science-notes.henrydashwood.com/data-science-notes/08_Decision_Optimisation/03_dynamic_decision_opt_files/figure-html/cell-3-output-1.svg">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Data Science Notes</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools ms-auto">
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../08_Decision_Optimisation/profit_curves.html">Decision_Optimisation</a></li><li class="breadcrumb-item"><a href="../08_Decision_Optimisation/dynamic_decision_opt.html">Simulation for Dynamic Decision Optimisation</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Science Notes</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../imbalanced_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Imbalanced Data</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Statistics</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../00_Statistics/statistics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Statistics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../00_Statistics/linear_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Linear Regression</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">General_Concepts</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../01_General_Concepts/metrics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Metrics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../01_General_Concepts/loss_functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Loss Functions</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Logistic_Regression</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../04_Logistic_Regression/logistic_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Logistic Regression</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Interpretability</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_Interpretability/feature_importance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Feature Importance</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_Interpretability/psi.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Population Stability Index (PSI)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_Interpretability/decile_analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Decile Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_Interpretability/partial_dependence.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Partial Dependence Plots</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../05_Interpretability/ale_plots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ALE PLot</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Computer_Vision</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../06_Computer_Vision/opencv.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">OpenCV</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../06_Computer_Vision/02_image_transforms.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Image Transforms</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Geospatial</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../07_Geospatial/geopandas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">GeoPandas</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../07_Geospatial/interactive_folium.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Interactive Maps with Folium</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../07_Geospatial/geocoding_and_joining.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Manipulating Geospatial Data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../07_Geospatial/shapely.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Shapely</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../07_Geospatial/gdal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">GDAL</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">
+ <span class="menu-text">Decision_Optimisation</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../08_Decision_Optimisation/profit_curves.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Profit Curves</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../08_Decision_Optimisation/decision_opt_continuous_outcomes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Decision Optimisation for Continuous Outcomes</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../08_Decision_Optimisation/dynamic_decision_opt.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Simulation for Dynamic Decision Optimisation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../08_Decision_Optimisation/drift.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Concept Drift and How Things Go Wrong</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true">
+ <span class="menu-text">Calculus</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Calculus/chain_rule.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Chain Rule</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Calculus/product_rule.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Product Rule</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Calculus/quotient_rule.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quotient Rule</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Calculus/partial_derivatives.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Partial Derivatives</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Calculus/directional_derivatives.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Directional Derivatives</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true">
+ <span class="menu-text">Data Science From Scratch</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Data Science From Scratch/gradient_descent.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Gradient Descent</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" aria-expanded="true">
+ <span class="menu-text">Gradient Boosting</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Gradient Boosting/rossman_xgboost.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">XGBoost</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" aria-expanded="true">
+ <span class="menu-text">Plotting</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Plotting/matplotlib.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Matplotlib</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" aria-expanded="true">
+ <span class="menu-text">Random Forests</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Random Forests/random_forest.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Random Forest</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" aria-expanded="true">
+ <span class="menu-text">Statistical Rethinking</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../Statistical Rethinking/chapter1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Baysian Data Analysis</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a>
+  <ul class="collapse">
+  <li><a href="#when-to-use-dynamic-optimisation" id="toc-when-to-use-dynamic-optimisation" class="nav-link" data-scroll-target="#when-to-use-dynamic-optimisation">When to use dynamic optimisation</a></li>
+  </ul></li>
+  <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation">Data Preparation</a></li>
+  <li><a href="#model-training" id="toc-model-training" class="nav-link" data-scroll-target="#model-training">Model training</a></li>
+  <li><a href="#simulation-loop" id="toc-simulation-loop" class="nav-link" data-scroll-target="#simulation-loop">Simulation loop</a>
+  <ul class="collapse">
+  <li><a href="#model-predictions" id="toc-model-predictions" class="nav-link" data-scroll-target="#model-predictions">Model predictions</a></li>
+  <li><a href="#simulation-loop-1" id="toc-simulation-loop-1" class="nav-link" data-scroll-target="#simulation-loop-1">Simulation loop</a></li>
+  <li><a href="#scaling-to-multiple-stores" id="toc-scaling-to-multiple-stores" class="nav-link" data-scroll-target="#scaling-to-multiple-stores">Scaling to multiple stores</a></li>
+  <li><a href="#programmatic-optimisation" id="toc-programmatic-optimisation" class="nav-link" data-scroll-target="#programmatic-optimisation">Programmatic Optimisation</a></li>
+  </ul></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/HenryDashwood/data-science-notes/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Simulation for Dynamic Decision Optimisation</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> graphviz</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> networkx <span class="im">as</span> nx</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pickle</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn <span class="im">as</span> nn</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.optim <span class="im">as</span> optim</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> r2_score</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> OrdinalEncoder</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch.utils.data <span class="im">import</span> Dataset, DataLoader</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>pd.set_option(<span class="st">"display.max_columns"</span>, <span class="va">None</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">"figure.facecolor"</span>] <span class="op">=</span> (<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>)  <span class="co"># RGBA tuple with alpha=0</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">"axes.facecolor"</span>] <span class="op">=</span> (<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>)  <span class="co"># RGBA tuple with alpha=0</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>PROJECT_ROOT <span class="op">=</span> Path.cwd().parent.parent</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>In static optimisation, the decisions you make in any given period don’t affect the decisions you need to make in a subsequent period. For instance, if the goods you stock will perish before your next order arrives you can treat the orders as being independent. However, if the items do not perish then and overstock in week 1 will affect the what the optimal amount to order in week 2 is.</p>
+<p>In static optimisation you have a <code>state</code>. The <code>agent</code> is the decision maker i.e us or the code that we write. The agent takes an <code>action</code> i.e.&nbsp;placing an order with the wholesaler. The environment is what happens i.e.&nbsp;what the demand is in the coming week. We can then calculate a <code>reward</code> which in this case could be the profit we make.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="st">State[shape=none label=""]</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="st">Agent[shape=box]</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="st">Action[shape=none label=""]</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="st">Environment[shape=box]</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="st">Reward[shape=none]</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="st">State-&gt;Agent[label="State"]</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="st">Agent-&gt;Environment[label="Action"]</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="st">Environment-&gt;Reward</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>graphviz.Source(<span class="ss">f'digraph G</span><span class="ch">{{</span><span class="ss">rankdir="LR"; margin=0; pad=0; bgcolor="transparent"; </span><span class="sc">{</span>s<span class="sc">}</span><span class="ch">}}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="03_dynamic_decision_opt_files/figure-html/cell-3-output-1.svg" class="img-fluid"></p>
+</div>
+</div>
+<p>In dynamic optimisation, the <code>State</code> of the world is determined in part from a path that is your <code>Agent</code> making decisions e.g.&nbsp;how much to order. The <code>Environment</code> e.g.&nbsp;the demand that week will determine the outcome and therefore the <code>Reward</code>. However it will also feed back into the <code>State</code> that we are in next time we need to make a decision, in our example by carrying forward surplus stock to the next week.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="st">Agent[shape=box]</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="st">Action[shape=none label=""]</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="st">Environment[shape=box]</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="st">Reward[shape=none]</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="st">Agent-&gt;Environment[label="Action"]</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="st">Environment-&gt;Agent[label="State"]</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="st">Environment-&gt;Reward</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>graphviz.Source(<span class="ss">f'digraph G</span><span class="ch">{{</span><span class="ss">rankdir="LR"; margin=0; pad=0; bgcolor="transparent"; </span><span class="sc">{</span>s<span class="sc">}</span><span class="ch">}}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="03_dynamic_decision_opt_files/figure-html/cell-4-output-1.svg" class="img-fluid"></p>
+</div>
+</div>
+<section id="when-to-use-dynamic-optimisation" class="level3">
+<h3 class="anchored" data-anchor-id="when-to-use-dynamic-optimisation">When to use dynamic optimisation</h3>
+<p>Simulation and dynamic optimsiation are much more complicated than static optimisation. So when do you need it?</p>
+<ul>
+<li><strong>One shot vs sequentially connected decisions</strong>: The most important factor to consider is whether each decision is one-shot or whether the decision you make today will affect the situation you are in tommorow.</li>
+<li><strong>Certain vs uncertain long-term payoffs</strong>: If you are reasonably sure what the payoffs of each decsion will be then you can use static optimisation. If not, you may need to model out the different paths a decision could lead you down.</li>
+<li><strong>Immediate vs long-term payoffs</strong>: You could have situations where the decsisions are technically sequential but the pay offs are so soon that you can use a static model.</li>
+</ul>
+<section id="examples" class="level4">
+<h4 class="anchored" data-anchor-id="examples">Examples:</h4>
+<ul>
+<li><strong>Telecom churn prediction and reduction</strong>: This can probably be done with static optimisation. However if a person stays with you, you may want to think about whether you give them a discount next month or the month after that. The decision you make may depend upon the discounts you have or have not given them in the preceding months. In this case, you may want to introduce a dynamic element to your optimisation.</li>
+<li><strong>Retail Inventory Management</strong>: As discussed elsewhere this usually requires a dynamic framing unless the stock will all perish before the next order arrives.</li>
+<li><strong>Hotel Pricing</strong>: This one is also best treated dynamically. If you have room available several months in the future and you don’t sell it today you could sell still sell it later possibly at a different price.</li>
+<li><strong>Credit Underwriting</strong>: This could be static problem. However, if you think this could turn into a recurring business relationship with a customer you may want to introduce a dynamic element to your model.</li>
+</ul>
+</section>
+</section>
+</section>
+<section id="data-preparation" class="level2">
+<h2 class="anchored" data-anchor-id="data-preparation">Data Preparation</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>all_data <span class="op">=</span> pd.read_csv(<span class="ss">f"</span><span class="sc">{</span>PROJECT_ROOT<span class="sc">}</span><span class="ss">/data/grupo-bimbo-inventory-demand/train.csv"</span>, low_memory<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(all_data.shape)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>all_data.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(74180464, 11)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Semana</th>
+<th data-quarto-table-cell-role="th">Agencia_ID</th>
+<th data-quarto-table-cell-role="th">Canal_ID</th>
+<th data-quarto-table-cell-role="th">Ruta_SAK</th>
+<th data-quarto-table-cell-role="th">Cliente_ID</th>
+<th data-quarto-table-cell-role="th">Producto_ID</th>
+<th data-quarto-table-cell-role="th">Venta_uni_hoy</th>
+<th data-quarto-table-cell-role="th">Venta_hoy</th>
+<th data-quarto-table-cell-role="th">Dev_uni_proxima</th>
+<th data-quarto-table-cell-role="th">Dev_proxima</th>
+<th data-quarto-table-cell-role="th">Demanda_uni_equil</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>3</td>
+<td>1110</td>
+<td>7</td>
+<td>3301</td>
+<td>15766</td>
+<td>1212</td>
+<td>3</td>
+<td>25.14</td>
+<td>0</td>
+<td>0.0</td>
+<td>3</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>3</td>
+<td>1110</td>
+<td>7</td>
+<td>3301</td>
+<td>15766</td>
+<td>1216</td>
+<td>4</td>
+<td>33.52</td>
+<td>0</td>
+<td>0.0</td>
+<td>4</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>3</td>
+<td>1110</td>
+<td>7</td>
+<td>3301</td>
+<td>15766</td>
+<td>1238</td>
+<td>4</td>
+<td>39.32</td>
+<td>0</td>
+<td>0.0</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>3</td>
+<td>1110</td>
+<td>7</td>
+<td>3301</td>
+<td>15766</td>
+<td>1240</td>
+<td>4</td>
+<td>33.52</td>
+<td>0</td>
+<td>0.0</td>
+<td>4</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>3</td>
+<td>1110</td>
+<td>7</td>
+<td>3301</td>
+<td>15766</td>
+<td>1242</td>
+<td>3</td>
+<td>22.92</td>
+<td>0</td>
+<td>0.0</td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>These columns represent:</p>
+<table class="table">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 72%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Column</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Semana</code></td>
+<td>The week number</td>
+</tr>
+<tr class="even">
+<td><code>Agencia_ID</code></td>
+<td>The ID of the store</td>
+</tr>
+<tr class="odd">
+<td><code>Canal_ID</code></td>
+<td>The ID of the sales channel</td>
+</tr>
+<tr class="even">
+<td><code>Ruta_SAK</code></td>
+<td>The ID of the route</td>
+</tr>
+<tr class="odd">
+<td><code>Cliente_ID</code></td>
+<td>The ID of the client</td>
+</tr>
+<tr class="even">
+<td><code>Producto_ID</code></td>
+<td>The ID of the product</td>
+</tr>
+<tr class="odd">
+<td><code>Venta_uni_hoy</code></td>
+<td>Number of units sold</td>
+</tr>
+<tr class="even">
+<td><code>Venta_hoy</code></td>
+<td>Sales value</td>
+</tr>
+<tr class="odd">
+<td><code>Dev_uni_proxima</code></td>
+<td>Number of units returned</td>
+</tr>
+<tr class="even">
+<td><code>Dev_proxima</code></td>
+<td>Returns value</td>
+</tr>
+<tr class="odd">
+<td><code>Demanda_uni_equil</code></td>
+<td>Demand. This is our target columm in a static model</td>
+</tr>
+</tbody>
+</table>
+<p>How can we set up our data for a dynamic model? Normally in machine learning we want our training data to be from a time before our validation data.</p>
+<p>We only have data from week 3 to week 9. For a project like this it is probably best to separate this into a couple of weeks of training data followed by a couple of weeks of validation data followed a long time to test how different decision making strategies play out over time. For this example we just use weeks 3 and 4 as training data and week 5 on wards as testing data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>all_data[<span class="st">"Semana"</span>].value_counts().sort_index()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>Semana
+3    11165207
+4    11009593
+5    10615397
+6    10191837
+7    10382849
+8    10406868
+9    10408713
+Name: count, dtype: int64</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>MIN_ML_MODEL_WEEK <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>MAX_ML_MODEL_WEEK <span class="op">=</span> <span class="dv">4</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>MIN_DECISION_MODEL_WEEK <span class="op">=</span> <span class="dv">5</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>MAX_DECISION_MODEL_WEEK <span class="op">=</span> <span class="dv">9</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The next thing to do is to check how much missing data we have. Each row is defined by the combination of IDs linked to it. So we can group the items by that list of IDs. We then see how in many different weeks that combination of IDs occurs.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>store_product_group_cols <span class="op">=</span> [<span class="st">"Agencia_ID"</span>, <span class="st">"Canal_ID"</span>, <span class="st">"Ruta_SAK"</span>, <span class="st">"Cliente_ID"</span>, <span class="st">"Producto_ID"</span>]</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>store_product_value_counts <span class="op">=</span> all_data.groupby(store_product_group_cols).size()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>all_data.groupby(store_product_group_cols)[<span class="st">"Semana"</span>].nunique().describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>count    2.639665e+07
+mean     2.810223e+00
+std      1.964561e+00
+min      1.000000e+00
+25%      1.000000e+00
+50%      2.000000e+00
+75%      4.000000e+00
+max      7.000000e+00
+Name: Semana, dtype: float64</code></pre>
+</div>
+</div>
+<p>Most of the combinations of IDs do not appear in every week. In a real project we would investigate why. Perhaps the data is missing. Perhaps those combinations represent products introduced or retired during the time period. Perhaps it means there was just no demand and we can fill those cases with zeros. For this example we will just drop the rows which don’t have the full 7 weeks of data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>full_filled_data <span class="op">=</span> all_data.set_index(store_product_group_cols)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>full_filled_data <span class="op">=</span> full_filled_data.loc[store_product_value_counts <span class="op">==</span> <span class="dv">7</span>]</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>full_filled_data.reset_index(inplace<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>full_filled_data.shape</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>(17606645, 11)</code></pre>
+</div>
+</div>
+<p>We will now split our data by week as discussed above</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>prediction_data <span class="op">=</span> full_filled_data.query(<span class="st">"Semana &gt;= @MIN_ML_MODEL_WEEK and Semana &lt;= @MAX_ML_MODEL_WEEK"</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>decision_data <span class="op">=</span> full_filled_data.query(<span class="st">"Semana &gt;= @MIN_DECISION_MODEL_WEEK and Semana &lt;= @MAX_DECISION_MODEL_WEEK"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="model-training" class="level2">
+<h2 class="anchored" data-anchor-id="model-training">Model training</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>SAMPLE_SIZE <span class="op">=</span> <span class="dv">500_000</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>num_unique_vals <span class="op">=</span> {col: prediction_data[col].nunique() <span class="cf">for</span> col <span class="kw">in</span> store_product_group_cols}</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> prediction_data.sample(SAMPLE_SIZE, random_state<span class="op">=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>X_categorical <span class="op">=</span> data[store_product_group_cols].values</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>X_numerical <span class="op">=</span> data[[<span class="st">"Venta_uni_hoy"</span>, <span class="st">"Venta_hoy"</span>]].values</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>encoder <span class="op">=</span> OrdinalEncoder(handle_unknown<span class="op">=</span><span class="st">"use_encoded_value"</span>, unknown_value<span class="op">=-</span><span class="dv">1</span>)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>X_categorical <span class="op">=</span> encoder.fit_transform(X_categorical)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> data[<span class="st">"Demanda_uni_equil"</span>].values</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>X_train_cat, X_val_cat, y_train, y_val <span class="op">=</span> train_test_split(X_categorical, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>X_train_num, X_val_num, _, _ <span class="op">=</span> train_test_split(X_numerical, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> BimboDataset(Dataset):</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, X_cat, X_num, y):</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.X_cat <span class="op">=</span> [torch.tensor(X_cat[:, i], dtype<span class="op">=</span>torch.<span class="bu">long</span>) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(X_cat.shape[<span class="dv">1</span>])]</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.X_num <span class="op">=</span> torch.tensor(X_num, dtype<span class="op">=</span>torch.float32)</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.y <span class="op">=</span> torch.tensor(y, dtype<span class="op">=</span>torch.float32)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__len__</span>(<span class="va">self</span>):</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">len</span>(<span class="va">self</span>.y)</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__getitem__</span>(<span class="va">self</span>, idx):</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>        x_cat <span class="op">=</span> [x[idx] <span class="cf">for</span> x <span class="kw">in</span> <span class="va">self</span>.X_cat]</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>        <span class="co"># x_cat = self.X_cat[idx]</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>        x_num <span class="op">=</span> <span class="va">self</span>.X_num[idx]</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>        y <span class="op">=</span> <span class="va">self</span>.y[idx]</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> (x_cat, x_num), y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>train_dataset <span class="op">=</span> BimboDataset(X_train_cat, X_train_num, y_train)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>val_dataset <span class="op">=</span> BimboDataset(X_val_cat, X_val_num, y_val)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>train_loader <span class="op">=</span> DataLoader(train_dataset, batch_size<span class="op">=</span><span class="dv">128</span>, shuffle<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>val_loader <span class="op">=</span> DataLoader(val_dataset, batch_size<span class="op">=</span><span class="dv">128</span>, shuffle<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SimpleModel(nn.Module):</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, categorical_cols, num_unique_vals, hidden_size<span class="op">=</span><span class="dv">128</span>, num_features<span class="op">=</span><span class="dv">2</span>):</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>(SimpleModel, <span class="va">self</span>).<span class="fu">__init__</span>()</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>        embedding_size <span class="op">=</span> <span class="dv">50</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.embeddings <span class="op">=</span> nn.ModuleList(</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>            [nn.Embedding(num_unique_vals[col], embedding_size) <span class="cf">for</span> col <span class="kw">in</span> categorical_cols]</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.num_layer <span class="op">=</span> nn.Linear(num_features, embedding_size)  <span class="co"># define a linear layer for numerical inputs</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.fc1 <span class="op">=</span> nn.Linear(</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>            embedding_size <span class="op">*</span> <span class="bu">len</span>(num_unique_vals) <span class="op">+</span> embedding_size, hidden_size</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>        )  <span class="co"># add embedding_size to input features of fc1 to account for the numerical inputs</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.fc2 <span class="op">=</span> nn.Linear(hidden_size, hidden_size)</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.fc3 <span class="op">=</span> nn.Linear(hidden_size, <span class="dv">1</span>)</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> forward(<span class="va">self</span>, x_cat, x_num):</span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>        x_cat <span class="op">=</span> [embedding(x_i.clip(<span class="dv">0</span>)) <span class="cf">for</span> x_i, embedding <span class="kw">in</span> <span class="bu">zip</span>(x_cat, <span class="va">self</span>.embeddings)]</span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>        x_cat <span class="op">=</span> torch.cat(x_cat, dim<span class="op">=-</span><span class="dv">1</span>)</span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>        x_num <span class="op">=</span> torch.relu(<span class="va">self</span>.num_layer(x_num))</span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> torch.cat([x_cat, x_num], dim<span class="op">=-</span><span class="dv">1</span>)</span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> torch.relu(<span class="va">self</span>.fc1(x))</span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> torch.relu(<span class="va">self</span>.fc2(x))</span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="va">self</span>.fc3(x).squeeze(<span class="op">-</span><span class="dv">1</span>)</span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> train_model(loss_fn, num_epochs<span class="op">=</span><span class="dv">2</span>):</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> SimpleModel(store_product_group_cols, num_unique_vals)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    optimizer <span class="op">=</span> optim.Adam(model.parameters(), lr<span class="op">=</span><span class="fl">0.005</span>)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Training loop</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(num_epochs):</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>        model.train()</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>        train_loss <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> (inputs_cat, inputs_num), targets <span class="kw">in</span> train_loader:</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>            optimizer.zero_grad()</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>            outputs <span class="op">=</span> model(inputs_cat, inputs_num).squeeze()</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>            loss <span class="op">=</span> loss_fn(outputs, targets)</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>            loss.backward()</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>            optimizer.step()</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>            train_loss <span class="op">+=</span> loss.item()</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>        train_loss <span class="op">/=</span> <span class="bu">len</span>(train_loader)</span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Validation loop</span></span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>        model.<span class="bu">eval</span>()</span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>        val_loss <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>        val_preds <span class="op">=</span> []</span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>        val_targets <span class="op">=</span> []</span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> torch.no_grad():</span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> (inputs_cat, inputs_num), targets <span class="kw">in</span> val_loader:</span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>                outputs <span class="op">=</span> model(inputs_cat, inputs_num).squeeze()</span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a>                loss <span class="op">=</span> loss_fn(outputs, targets)</span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a>                val_loss <span class="op">+=</span> loss.item()</span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a>                val_preds.extend(outputs.tolist())</span>
+<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a>                val_targets.extend(targets.tolist())</span>
+<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-31"><a href="#cb23-31" aria-hidden="true" tabindex="-1"></a>        val_loss <span class="op">/=</span> <span class="bu">len</span>(val_loader)</span>
+<span id="cb23-32"><a href="#cb23-32" aria-hidden="true" tabindex="-1"></a>        r2 <span class="op">=</span> r2_score(val_targets, val_preds)</span>
+<span id="cb23-33"><a href="#cb23-33" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Epoch: </span><span class="sc">{</span>epoch<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss"> | Train loss: </span><span class="sc">{</span>train_loss<span class="sc">:.3f}</span><span class="ss"> | Val loss: </span><span class="sc">{</span>val_loss<span class="sc">:.3f}</span><span class="ss"> | R2: </span><span class="sc">{</span>r2<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb23-34"><a href="#cb23-34" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> model</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>loss <span class="op">=</span> nn.MSELoss()</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> train_model(loss, num_epochs<span class="op">=</span><span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Epoch: 1 | Train loss: 64.210 | Val loss: 5.106 | R2: 0.996
+Epoch: 2 | Train loss: 16.711 | Val loss: 5.293 | R2: 0.996
+Epoch: 3 | Train loss: 34.655 | Val loss: 6.724 | R2: 0.994
+Epoch: 4 | Train loss: 10.297 | Val loss: 81.655 | R2: 0.933
+Epoch: 5 | Train loss: 8.200 | Val loss: 7.465 | R2: 0.994</code></pre>
+</div>
+</div>
+</section>
+<section id="simulation-loop" class="level2">
+<h2 class="anchored" data-anchor-id="simulation-loop">Simulation loop</h2>
+<p>At a high level the heart of the simulation code is going to be a for loop. We will loop through all the periods i.e weeks. First we’ll calculate what happens in week 1. Given what happens in week 1 we will calculate what happens in week 2. Given what happens in week 2 we will calculate what happens in week 3 and so on.</p>
+<p>In some cases it is necessary to see what the decisions were in period 1 to know what the inputs to the model will be in period 2. In our case the thing our model is predicting is demand, not how much we sell but how much customers want to buy. The decsisions we make around stocking will not affect how much customers want to buy (there is a caveat here around whether the measure of demand is accurate. For instance the record of historical demand may appear to have a cap at the amount of stock that the shop had in the past. We’ll set that aside for now). This means we can calculate our model’s predictions up front.</p>
+<p>We’ll begin my by getting predictions for a single combination of IDs over the test period.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>sample_store_and_product <span class="op">=</span> decision_data.query(</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Agencia_ID == 1110 &amp; Canal_ID == 7 &amp; Ruta_SAK == 3301 &amp; Cliente_ID == 15766 &amp; Producto_ID == 1238"</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="model-predictions" class="level3">
+<h3 class="anchored" data-anchor-id="model-predictions">Model predictions</h3>
+<p>The following function will return our model’s predictions as a new column called <code>predicted_demand</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> add_preds_to_df(df, categorical_cols, continuous_cols):</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    categorical_for_prediction <span class="op">=</span> df[categorical_cols].values</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    categorical_encoded <span class="op">=</span> encoder.transform(categorical_for_prediction)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    categorical_tensor <span class="op">=</span> torch.from_numpy(categorical_encoded).<span class="bu">long</span>()</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    categorical_tensor <span class="op">=</span> [categorical_tensor[:, i] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(categorical_tensor.shape[<span class="dv">1</span>])]</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    numerical_tensor <span class="op">=</span> torch.from_numpy(df[continuous_cols].values).<span class="bu">float</span>()</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>    model.<span class="bu">eval</span>()</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> torch.no_grad():</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>        prediction <span class="op">=</span> model(categorical_tensor, numerical_tensor)</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df.assign(predicted_demand<span class="op">=</span>prediction.numpy())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>add_preds_to_df(sample_store_and_product, store_product_group_cols, [<span class="st">"Venta_uni_hoy"</span>, <span class="st">"Venta_hoy"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Agencia_ID</th>
+<th data-quarto-table-cell-role="th">Canal_ID</th>
+<th data-quarto-table-cell-role="th">Ruta_SAK</th>
+<th data-quarto-table-cell-role="th">Cliente_ID</th>
+<th data-quarto-table-cell-role="th">Producto_ID</th>
+<th data-quarto-table-cell-role="th">Semana</th>
+<th data-quarto-table-cell-role="th">Venta_uni_hoy</th>
+<th data-quarto-table-cell-role="th">Venta_hoy</th>
+<th data-quarto-table-cell-role="th">Dev_uni_proxima</th>
+<th data-quarto-table-cell-role="th">Dev_proxima</th>
+<th data-quarto-table-cell-role="th">Demanda_uni_equil</th>
+<th data-quarto-table-cell-role="th">predicted_demand</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">5030470</td>
+<td>1110</td>
+<td>7</td>
+<td>3301</td>
+<td>15766</td>
+<td>1238</td>
+<td>5</td>
+<td>1</td>
+<td>9.83</td>
+<td>0</td>
+<td>0.0</td>
+<td>1</td>
+<td>1.239577</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">7545705</td>
+<td>1110</td>
+<td>7</td>
+<td>3301</td>
+<td>15766</td>
+<td>1238</td>
+<td>6</td>
+<td>2</td>
+<td>19.66</td>
+<td>0</td>
+<td>0.0</td>
+<td>2</td>
+<td>1.792842</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">10060940</td>
+<td>1110</td>
+<td>7</td>
+<td>3301</td>
+<td>15766</td>
+<td>1238</td>
+<td>7</td>
+<td>2</td>
+<td>19.66</td>
+<td>0</td>
+<td>0.0</td>
+<td>2</td>
+<td>1.792842</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">12576175</td>
+<td>1110</td>
+<td>7</td>
+<td>3301</td>
+<td>15766</td>
+<td>1238</td>
+<td>8</td>
+<td>3</td>
+<td>29.49</td>
+<td>0</td>
+<td>0.0</td>
+<td>3</td>
+<td>2.943027</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">15091410</td>
+<td>1110</td>
+<td>7</td>
+<td>3301</td>
+<td>15766</td>
+<td>1238</td>
+<td>9</td>
+<td>2</td>
+<td>19.66</td>
+<td>0</td>
+<td>0.0</td>
+<td>2</td>
+<td>1.792842</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="simulation-loop-1" class="level3">
+<h3 class="anchored" data-anchor-id="simulation-loop-1">Simulation loop</h3>
+<p>Let’s demonstrate how the predicted and actual demand will affect the sales, suplus, and shortage we have over a few weeks. This is the sort of thing you might want to do in a spreadsheet. However we can also do it in code. We’ll start by inventing some dummy values for predicted and actual demand.</p>
+<p>In the first week of our simulation we obviously have no old stock.</p>
+<p>We’ll assume a rule of “order 10% more than the forecasted demand.</p>
+<p>The amount we actually sell is the minimum of the actual demand and how much we we have in stock. How much we have in stock is the sum of the old stock and the new stock we ordered.</p>
+<p>The shortage is how much people want to buy minus how much we are actually able to sell them.</p>
+<p>The amount spoiled will depend on the specific shelf life of whatever product or products you are modelling. It may also depend on whether you can always sell old stock before new stock. We are going to make the assumptions we can keep stock on sale for 1 week <em>and</em> that we can always sell old stock before new stock. So the amount spoiled will be the maximum of zero and the old stock minus actual demand. So:</p>
+<ul>
+<li>if actual demand was 20 and and we had 5 old stock, the amount spoiled would be 0.</li>
+<li>if actual demand was 2 and and we had 5 old stock, the amount spoiled would be 3.</li>
+</ul>
+<p>Finally leftover stock can never be less than 0. Also because if we still have unsold old stock at the end of the week it will have spoiled we will only be able to carry the new stock over to the next week. So</p>
+<ul>
+<li>if actual demand was 20 and and we had 5 old stock and 10 new stock, the leftover stock would be 0.</li>
+<li>if actual demand was 10 and and we had 5 old stock and 10 new stock, the leftover stock would be 5.</li>
+<li>if actual demand was 10 and and we had 15 old stock and 10 new stock, the leftover stock would be 10.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> create_simulation_table(actual_demand, forecasted_demand, decision_rule):</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.DataFrame()</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    weeks <span class="op">=</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(actual_demand) <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> week, actual_demand, forecasted_demand <span class="kw">in</span> <span class="bu">zip</span>(weeks, actual_demand, forecasted_demand):</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>        df.loc[week, <span class="st">"week"</span>] <span class="op">=</span> week</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>        df.loc[week, <span class="st">"actual_demand"</span>] <span class="op">=</span> actual_demand</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>        df.loc[week, <span class="st">"predicted_demand"</span>] <span class="op">=</span> forecasted_demand</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>        df.loc[week, <span class="st">"old_stock"</span>] <span class="op">=</span> <span class="dv">0</span> <span class="cf">if</span> week <span class="op">==</span> <span class="dv">1</span> <span class="cf">else</span> df.loc[week <span class="op">-</span> <span class="dv">1</span>][<span class="st">"leftover_stock"</span>]</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>        df.loc[week, <span class="st">"new_stock"</span>] <span class="op">=</span> decision_rule(df.loc[week])</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>        df.loc[week, <span class="st">"actually_sell"</span>] <span class="op">=</span> <span class="bu">min</span>(actual_demand, df.loc[week, <span class="st">"old_stock"</span>] <span class="op">+</span> df.loc[week, <span class="st">"new_stock"</span>])</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>        df.loc[week, <span class="st">"shortage"</span>] <span class="op">=</span> actual_demand <span class="op">-</span> df.loc[week, <span class="st">"actually_sell"</span>]</span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>        df.loc[week, <span class="st">"spoiled"</span>] <span class="op">=</span> <span class="bu">max</span>(df.loc[week, <span class="st">"old_stock"</span>] <span class="op">-</span> actual_demand, <span class="dv">0</span>)</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>        df.loc[week, <span class="st">"leftover_stock"</span>] <span class="op">=</span> <span class="bu">max</span>(</span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>            <span class="dv">0</span>, <span class="bu">min</span>((df.loc[week, <span class="st">"old_stock"</span>] <span class="op">+</span> df.loc[week, <span class="st">"new_stock"</span>]) <span class="op">-</span> actual_demand, df.loc[week, <span class="st">"new_stock"</span>])</span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Here we can see our simulation play out with some dummy data and a decision rule where we stock 10% more than the forecasted demand each week</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> add_ten_percent(state):</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.ceil(state[<span class="st">"predicted_demand"</span>] <span class="op">*</span> <span class="fl">1.1</span>)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>create_simulation_table([<span class="dv">5</span>, <span class="dv">7</span>, <span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">6</span>], [<span class="dv">7</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">1</span>], add_ten_percent)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">week</th>
+<th data-quarto-table-cell-role="th">actual_demand</th>
+<th data-quarto-table-cell-role="th">predicted_demand</th>
+<th data-quarto-table-cell-role="th">old_stock</th>
+<th data-quarto-table-cell-role="th">new_stock</th>
+<th data-quarto-table-cell-role="th">actually_sell</th>
+<th data-quarto-table-cell-role="th">shortage</th>
+<th data-quarto-table-cell-role="th">spoiled</th>
+<th data-quarto-table-cell-role="th">leftover_stock</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1</td>
+<td>1.0</td>
+<td>5.0</td>
+<td>7.0</td>
+<td>0.0</td>
+<td>8.0</td>
+<td>5.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>3.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2</td>
+<td>2.0</td>
+<td>7.0</td>
+<td>3.0</td>
+<td>3.0</td>
+<td>4.0</td>
+<td>7.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">3</td>
+<td>3.0</td>
+<td>3.0</td>
+<td>2.0</td>
+<td>0.0</td>
+<td>3.0</td>
+<td>3.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">4</td>
+<td>4.0</td>
+<td>1.0</td>
+<td>4.0</td>
+<td>0.0</td>
+<td>5.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>4.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">5</td>
+<td>5.0</td>
+<td>6.0</td>
+<td>1.0</td>
+<td>4.0</td>
+<td>2.0</td>
+<td>6.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>Now let’s apply it to the subset of data we used to test our model’s predictions</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> add_simulation_to_table(df, categorical_cols, continuous_cols, decision_rule):</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> add_preds_to_df(df, categorical_cols, continuous_cols)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    simulation_table <span class="op">=</span> create_simulation_table(df[<span class="st">"Demanda_uni_equil"</span>], df[<span class="st">"predicted_demand"</span>], decision_rule)</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    simulation_cols <span class="op">=</span> [<span class="st">"old_stock"</span>, <span class="st">"new_stock"</span>, <span class="st">"actually_sell"</span>, <span class="st">"shortage"</span>, <span class="st">"spoiled"</span>, <span class="st">"leftover_stock"</span>]</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    df[simulation_cols] <span class="op">=</span> simulation_table[simulation_cols].values</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The decision rule here is even simpler; we just stock one item each week</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> first_decision_rule(state):</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">1</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>add_simulation_to_table(</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>    sample_store_and_product, store_product_group_cols, [<span class="st">"Venta_uni_hoy"</span>, <span class="st">"Venta_hoy"</span>], first_decision_rule</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Agencia_ID</th>
+<th data-quarto-table-cell-role="th">Canal_ID</th>
+<th data-quarto-table-cell-role="th">Ruta_SAK</th>
+<th data-quarto-table-cell-role="th">Cliente_ID</th>
+<th data-quarto-table-cell-role="th">Producto_ID</th>
+<th data-quarto-table-cell-role="th">Semana</th>
+<th data-quarto-table-cell-role="th">Venta_uni_hoy</th>
+<th data-quarto-table-cell-role="th">Venta_hoy</th>
+<th data-quarto-table-cell-role="th">Dev_uni_proxima</th>
+<th data-quarto-table-cell-role="th">Dev_proxima</th>
+<th data-quarto-table-cell-role="th">Demanda_uni_equil</th>
+<th data-quarto-table-cell-role="th">predicted_demand</th>
+<th data-quarto-table-cell-role="th">old_stock</th>
+<th data-quarto-table-cell-role="th">new_stock</th>
+<th data-quarto-table-cell-role="th">actually_sell</th>
+<th data-quarto-table-cell-role="th">shortage</th>
+<th data-quarto-table-cell-role="th">spoiled</th>
+<th data-quarto-table-cell-role="th">leftover_stock</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">5030470</td>
+<td>1110</td>
+<td>7</td>
+<td>3301</td>
+<td>15766</td>
+<td>1238</td>
+<td>5</td>
+<td>1</td>
+<td>9.83</td>
+<td>0</td>
+<td>0.0</td>
+<td>1</td>
+<td>1.239577</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">7545705</td>
+<td>1110</td>
+<td>7</td>
+<td>3301</td>
+<td>15766</td>
+<td>1238</td>
+<td>6</td>
+<td>2</td>
+<td>19.66</td>
+<td>0</td>
+<td>0.0</td>
+<td>2</td>
+<td>1.792842</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">10060940</td>
+<td>1110</td>
+<td>7</td>
+<td>3301</td>
+<td>15766</td>
+<td>1238</td>
+<td>7</td>
+<td>2</td>
+<td>19.66</td>
+<td>0</td>
+<td>0.0</td>
+<td>2</td>
+<td>1.792842</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">12576175</td>
+<td>1110</td>
+<td>7</td>
+<td>3301</td>
+<td>15766</td>
+<td>1238</td>
+<td>8</td>
+<td>3</td>
+<td>29.49</td>
+<td>0</td>
+<td>0.0</td>
+<td>3</td>
+<td>2.943027</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>2.0</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">15091410</td>
+<td>1110</td>
+<td>7</td>
+<td>3301</td>
+<td>15766</td>
+<td>1238</td>
+<td>9</td>
+<td>2</td>
+<td>19.66</td>
+<td>0</td>
+<td>0.0</td>
+<td>2</td>
+<td>1.792842</td>
+<td>0.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>0.0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="scaling-to-multiple-stores" class="level3">
+<h3 class="anchored" data-anchor-id="scaling-to-multiple-stores">Scaling to multiple stores</h3>
+<p>To make the data a more manageable for our illustrative purposes we’ll arbitrarily use the rows with an <code>Agencia_ID</code> of 1110 to pick our rule and the rows with an <code>Agencia_ID</code> of 24049 to test it.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>decision_validation_data <span class="op">=</span> decision_data.query(<span class="st">"Agencia_ID == 1110"</span>)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>decision_holdout_data <span class="op">=</span> decision_data.query(<span class="st">"Agencia_ID == 24049"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The next step is to apply perform the simulation on multiple stores. We’ll do this by grouping the data by <code>Agencia_ID</code> and then applying the simulation to each group.</p>
+<p>Something to note here is the objective function. This is just an example of something you might come up with to help put a number on the combination of different outcomes that may arise as a result of different decision rules.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> objective_function(df):</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>        df[<span class="st">"actually_sell"</span>].<span class="bu">sum</span>() <span class="op">-</span> <span class="dv">3</span> <span class="op">*</span> df[<span class="st">"shortage"</span>].<span class="bu">sum</span>() <span class="op">-</span> <span class="fl">0.5</span> <span class="op">*</span> df[<span class="st">"spoiled"</span>].<span class="bu">sum</span>() <span class="op">-</span> <span class="fl">0.5</span> <span class="op">*</span> df[<span class="st">"old_stock"</span>].<span class="bu">sum</span>()</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> simulate_multiple_stores_and_products(raw_data, decision_function):</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    groups <span class="op">=</span> raw_data.groupby(store_product_group_cols)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    outcomes <span class="op">=</span> pd.concat(</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>        [</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>            add_simulation_to_table(group, store_product_group_cols, [<span class="st">"Venta_uni_hoy"</span>, <span class="st">"Venta_hoy"</span>], decision_function)</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> _, group <span class="kw">in</span> groups</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>        ]</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> {</span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"number_of_orders"</span>: outcomes[<span class="st">"new_stock"</span>].count(),</span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">"total_inventory_orders"</span>: outcomes[<span class="st">"new_stock"</span>].<span class="bu">sum</span>(),</span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">"number_of_shortages"</span>: (outcomes[<span class="st">"shortage"</span>] <span class="op">&gt;</span> <span class="dv">0</span>).<span class="bu">sum</span>(),</span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">"total_shortage"</span>: outcomes[<span class="st">"shortage"</span>].<span class="bu">sum</span>(),</span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>        <span class="st">"total_sold"</span>: outcomes[<span class="st">"actually_sell"</span>].<span class="bu">sum</span>(),</span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>        <span class="st">"total_old_stock"</span>: outcomes[<span class="st">"old_stock"</span>].<span class="bu">sum</span>(),</span>
+<span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a>        <span class="st">"total_spoiled"</span>: outcomes[<span class="st">"spoiled"</span>].<span class="bu">sum</span>(),</span>
+<span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a>        <span class="st">"objective_function"</span>: objective_function(outcomes),</span>
+<span id="cb35-18"><a href="#cb35-18" aria-hidden="true" tabindex="-1"></a>    }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We are also going to try out a few other possible decision rules so we can see how they may affect things. These are all a bit more realistic than just setting everything to be 1.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> predicted_need(state):</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.ceil(state[<span class="st">"predicted_demand"</span>] <span class="op">-</span> state[<span class="st">"old_stock"</span>])</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> predicted_need_plus_one(state):</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> predicted_need(state) <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> predicted_demand(state):</span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.ceil(state[<span class="st">"predicted_demand"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>outcomes <span class="op">=</span> []</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> rule <span class="kw">in</span> [predicted_need, predicted_need_plus_one, predicted_demand]:</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    outcomes.append(simulate_multiple_stores_and_products(decision_validation_data, rule))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>outcomes_df <span class="op">=</span> pd.DataFrame(outcomes)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>outcomes_df[<span class="st">"rule"</span>] <span class="op">=</span> [<span class="st">"predicted_need"</span>, <span class="st">"predicted_need_plus_one"</span>, <span class="st">"predicted_demand"</span>]</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>outcomes_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">number_of_orders</th>
+<th data-quarto-table-cell-role="th">total_inventory_orders</th>
+<th data-quarto-table-cell-role="th">number_of_shortages</th>
+<th data-quarto-table-cell-role="th">total_shortage</th>
+<th data-quarto-table-cell-role="th">total_sold</th>
+<th data-quarto-table-cell-role="th">total_old_stock</th>
+<th data-quarto-table-cell-role="th">total_spoiled</th>
+<th data-quarto-table-cell-role="th">objective_function</th>
+<th data-quarto-table-cell-role="th">rule</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>14270</td>
+<td>327148.0</td>
+<td>6068</td>
+<td>16361.0</td>
+<td>326756.0</td>
+<td>1355.0</td>
+<td>105.0</td>
+<td>276943.0</td>
+<td>predicted_need</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>14270</td>
+<td>334979.0</td>
+<td>3160</td>
+<td>10293.0</td>
+<td>332824.0</td>
+<td>7794.0</td>
+<td>274.0</td>
+<td>297911.0</td>
+<td>predicted_need_plus_one</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>14270</td>
+<td>328503.0</td>
+<td>5960</td>
+<td>16179.0</td>
+<td>326938.0</td>
+<td>2913.0</td>
+<td>343.0</td>
+<td>276773.0</td>
+<td>predicted_demand</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>What are these results showing us? The <code>predicted_demand</code> rule simply orders however much we think we will sell. It ignores the amount we are carrying over from the previous week. It does the worst. It results in the most old stock being carried forward. This means it results in far more stock being spoiled. It also doesn’t even result in lower shortages compared to the columns based on predicted need.</p>
+<p>In this case ordering our predicted need with a buffer has come out slightly ahead of predicted need in our objective function. This makes sense has that function deliberately weights shortages more than spoilages. Whether those weights have been chosen correctly will depend upon your circumstances.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">3</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">16</span>, <span class="dv">10</span>), sharey<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> ax.flatten()</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].barh(outcomes_df[<span class="st">"rule"</span>], outcomes_df[<span class="st">"objective_function"</span>])</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">0</span>].set_title(<span class="st">"Objective function"</span>)</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].barh(outcomes_df[<span class="st">"rule"</span>], outcomes_df[<span class="st">"total_old_stock"</span>])</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">1</span>].set_title(<span class="st">"Total old stock"</span>)</span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">2</span>].barh(outcomes_df[<span class="st">"rule"</span>], outcomes_df[<span class="st">"total_spoiled"</span>])</span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">2</span>].set_title(<span class="st">"Total spoiled"</span>)</span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">3</span>].barh(outcomes_df[<span class="st">"rule"</span>], outcomes_df[<span class="st">"number_of_shortages"</span>])</span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">3</span>].set_title(<span class="st">"Number of shortages"</span>)</span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">4</span>].barh(outcomes_df[<span class="st">"rule"</span>], outcomes_df[<span class="st">"total_shortage"</span>])</span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">4</span>].set_title(<span class="st">"Total shortage"</span>)</span>
+<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">5</span>].barh(outcomes_df[<span class="st">"rule"</span>], outcomes_df[<span class="st">"total_sold"</span>])</span>
+<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">5</span>].set_title(<span class="st">"Total sold"</span>)</span>
+<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">6</span>].barh(outcomes_df[<span class="st">"rule"</span>], outcomes_df[<span class="st">"total_inventory_orders"</span>])</span>
+<span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a>ax[<span class="dv">6</span>].set_title(<span class="st">"Total inventory orders"</span>)</span>
+<span id="cb39-18"><a href="#cb39-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-19"><a href="#cb39-19" aria-hidden="true" tabindex="-1"></a>fig.tight_layout()</span>
+<span id="cb39-20"><a href="#cb39-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-21"><a href="#cb39-21" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="03_dynamic_decision_opt_files/figure-html/cell-35-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="programmatic-optimisation" class="level3">
+<h3 class="anchored" data-anchor-id="programmatic-optimisation">Programmatic Optimisation</h3>
+<p>At this point you may choose to programmatically optimise you decision function parameters using something like a hyperparameter optimisation library from the scikit-learn ecosystem or Weights and Bias’s sweep capabilities.</p>
+</section>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<ul>
+<li><a href="https://www.wandb.courses/courses/decision-optimization">Machine Learning for Business Decision Optimization</a> - Dan Becker</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
